@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 50px;
+      }
+
+      form {
+        width: 300px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Formulário de Cadastro</h2>
+    <form id="register">
+      <!-- Campo Nome -->
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" >
+
+      <!-- Campo Email -->
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" >
+
+      <!-- Campo Senha -->
+      <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" >
+
+      <!-- Campo Data de Nascimento -->
+      <label for="birthDate">Data de Nascimento:</label>
+      <input type="date" id="birthDate" name="birthDate" >
+
+      <!-- Campo Telefone -->
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" name="telefone" placeholder="(xx) xxxx-xxxx">
+
+      <!-- Campo Tipo -->
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" name="tipo" >
+        <option value="cliente">Cliente</option>
+        <option value="profissional">Profissional</option>
+      </select>
+
+      <!-- Botão de Enviar -->
+      <button type="submit">Cadastrar</button>
+      
+    </form>
+    <script src="/javascript/cadastro.js"></script>
+  </body>
+
+</html>
