@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Profissionais</title>
+  </head>
+
+  <body>
+    <h1>Lista de Profissionais</h1>
+    <ul>
+      <% profissionais.forEach(profissional=> { %>
+        <li>
+          Nome: <%= profissional.nome %>,
+            Email: <%= profissional.email %>,
+              Especialidade: <%= profissional.especialidade %>
+                <!-- Adicione um link ou botão para visualizar detalhes -->
+                
+        </li>
+        <% }) %>
+    </ul>
+  </body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Profissionais</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      input,
+      textarea {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      #responseMessage {
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Cadastro de Profissionais</h1>
+      <form id="professionalRegisterForm">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="cpf" placeholder="CPF" required>
+        <input type="password" id="senha" placeholder="Senha" required>
+        <input type="text" id="genero" placeholder="Gênero">
+        <input type="date" id="dataNascimento" placeholder="Data de Nascimento">
+        <input type="text" id="telefone" placeholder="Telefone">
+        <input type="text" id="formacao" placeholder="Formação">
+        <input type="text" id="especialidade" placeholder="Especialidade">
+        <input type="number" id="tempo_experiencia" placeholder="Tempo de Experiência (em anos)">
+        <input type="text" id="crefito_ou_crm" placeholder="CREFITO ou CRM">
+        <textarea id="descricao" placeholder="Descrição do profissional" rows="4"></textarea>
+        <input type="file" id="foto" accept="image/*">
+        <input type="text" id="cidade" placeholder="Cidade de atuação">
+        <button type="submit">Cadastrar</button>
+      </form>
+      <div id="responseMessage"></div>
+    </div>
+
+    <script src="/javascript/cadastro_profissional.js"></script>
+  </body>
+
+</html>

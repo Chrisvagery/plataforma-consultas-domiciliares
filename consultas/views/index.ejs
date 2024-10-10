@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <title>Home</title>
+    <style>
+      /* Estilo para a barra de navegação */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar {
+        background-color: #333;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+
+      .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+
+      /* Estilo para o dropdown de cadastro */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      /* Responsividade para dispositivos móveis */
+      @media (max-width: 600px) {
+        .navbar a {
+          display: none;
+        }
+
+        .menu-toggle {
+          display: block;
+          color: white;
+          font-size: 20px;
+          cursor: pointer;
+        }
+
+        .navbar.active a {
+          display: block;
+          text-align: center;
+          width: 100%;
+        }
+
+        .navbar.active {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .profissionais {
+        margin-top: 20px;
+        display: flex;
+        /* Adicionado para alinhamento lado a lado */
+        flex-wrap: wrap;
+        /* Permite quebrar linha se não houver espaço */
+        justify-content: space-between;
+        /* Distribui o espaço entre os itens */
+      }
+
+      .profissionais ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        /* Permite que os itens quebrem para a próxima linha */
+      }
+
+      .profissionais li {
+        margin: 10px;
+        /* Aumentado para mais espaço entre os cards */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 400px;
+        /* Aumentado para mais largura nos cards */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* Adiciona uma sombra ao card */
+      }
+
+      .profissionais img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      /* Responsividade para os profissionais */
+      @media (max-width: 400px) {
+        .profissionais li {
+          width: 100%;
+          /* Ajusta a largura em telas pequenas */
+        }
+
+        .profissionais img {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar" id="navbar">
+      <span class="menu-toggle" id="menu-toggle">&#9776;</span>
+      <a href="/">Home</a>
+      <div class="dropdown">
+        <a href="#">Cadastro</a>
+        <div class="dropdown-content">
+          <a href="/register">Cadastrar como Cliente</a>
+          <a href="/register-profissional">Cadastrar como Profissional</a>
+        </div>
+      </div>
+      <a href="/login">Login</a>
+    </div>
+
+    <div class="content">
+      <h1>Bem-vindo à Home Page</h1>
+
+      <div class="profissionais">
+        <ul>
+          <% if (profissionais && profissionais.length> 0) { %>
+            <% profissionais.forEach(profissional=> { %>
+              <li>
+                <% if (profissional.foto) { %>
+                  <img src="data:image/jpeg;base64,<%= profissional.foto.toString('base64') %>"
+                    alt="Foto de <%= profissional.nome %>">
+                  <% } else { %>
+                    <img src="/images/default-profile.png" alt="Foto padrão">
+                    <% } %>
+                      <p><strong>Nome:</strong>
+                        <%= profissional.nome %>
+                      </p>
+                      <p><strong>Formação:</strong>
+                        <%= profissional.formacao %>
+                      </p>
+                      <p><strong>Especialidade:</strong>
+                        <%= profissional.especialidade %>
+                      </p>
+                      <p><strong>Descrição:</strong>
+                        <%= profissional.descricao %>
+                      </p>
+                      <p>
+                        <button onclick="showDetails('<%= profissional.id %>')">Saiba mais</button>
+                      </p>
+              </li>
+              <% }) %>
+                <% } else { %>
+                  <li>Nenhum profissional cadastrado.</li>
+                  <% } %>
+        </ul>
+      </div>
+
+    </div>
+
+    <script>
+      function showDetails(profissionalId) {
+        // Faz uma requisição para buscar detalhes do profissional
+        fetch(`/profissionais/${profissionalId}`)
+          .then(response => response.json())
+          .then(data => {
+            // Aqui você pode mostrar as informações do profissional em um modal ou em outra seção da página
+            console.log(data); // Substitua isso pela lógica para exibir os dados
+          })
+          .catch(error => console.error('Erro:', error));
+      }
+
+      const menuToggle = document.getElementById('menu-toggle');
+      const navbar = document.getElementById('navbar');
+
+      menuToggle.addEventListener('click', () => {
+        navbar.classList.toggle('active');
+      });
+    </script>
+
+  </body>
+
+</html>
