@@ -16,7 +16,7 @@ const crypto = require("crypto");
 // });
 
 router.get("/register", (req, res) => {
-  res.render("cadastro");
+  res.render("cadastro_cliente");
 });
 router.get("/register-profissional", (req, res) => {
   res.render("cadastro_profissional");
