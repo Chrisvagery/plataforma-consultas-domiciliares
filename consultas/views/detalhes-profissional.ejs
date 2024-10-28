@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/detalhes-profissional.css">
+    <title>Detalhes do Profissional</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Horários Disponíveis</h1>
+
+      <div class="profissional-info">
+        <h2>Profissional: <%= profissional.nome %>
+        </h2>
+      </div>
+
+      <h2>Horários Disponíveis</h2>
+      <ul class="horarios">
+        <% horariosDisponiveis.forEach(horario=> { %>
+          <li>
+            <span>
+              <%= horario.horario %>
+            </span>
+            <button onclick="selecionarHorario('<%= horario.horario %>')">Selecionar</button>
+          </li>
+          <% }) %>
+      </ul>
+
+      <h2>Preços</h2>
+      <div class="planos">
+        <div class="plano">
+          <h3>Consulta Simples</h3>
+          <p>Preço: R$ 100,00</p>
+          <button onclick="selecionarPreco(100)">Selecionar</button>
+        </div>
+        <div class="plano">
+          <h3>Consulta Avançada</h3>
+          <p>Preço: R$ 150,00</p>
+          <button onclick="selecionarPreco(150)">Selecionar</button>
+        </div>
+        <div class="plano">
+          <h3>Pacote de 5 Consultas</h3>
+          <p>Preço: R$ 400,00</p>
+          <button onclick="selecionarPreco(400)">Selecionar</button>
+        </div>
+      </div>
+
+      <h2>Agendar Consulta</h2>
+      <form id="agendarForm" action="/agendar-consulta" method="POST" onsubmit="return validarFormulario()">
+        <input type="hidden" id="horarioSelecionado" name="horarioSelecionado" required>
+        <input type="hidden" id="precoConsulta" name="precoConsulta" required>
+        <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
+        <button type="submit">Confirmar Agendamento</button>
+      </form>
+    </div>
+
+    <button onclick="window.history.back()">Voltar</button>
+
+    <script>
+      function selecionarHorario(horario) {
+        document.getElementById('horarioSelecionado').value = horario;
+        alert(`Horário ${horario} selecionado!`);
+      }
+
+      function selecionarPreco(preco) {
+        document.getElementById('precoConsulta').value = preco;
+        alert(`Preço selecionado: R$ ${preco},00!`);
+      }
+
+      function validarFormulario() {
+        const horario = document.getElementById('horarioSelecionado').value;
+        const valor = document.getElementById('precoConsulta').value;
+
+        if (!horario || !valor) {
+          alert("Por favor, selecione o horário e o preço da consulta.");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+
+</html>

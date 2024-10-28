@@ -10,9 +10,12 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const { sendEmail } = require("./../mailer");
 const crypto = require("crypto");
 
-// Exemplo de rota
-// router.get("/", (req, res) => {
-//   res.render('index');
+router.get("/", (req, res) => {
+  res.render("index");
+});
+//Exemplo de rota
+// router.get("/home", (req, res) => {
+//   res.render('home');
 // });
 
 router.get("/register", (req, res) => {
@@ -40,6 +43,17 @@ router.get("/reset-password", (req, res) => {
 router.get("/pagamento", (req, res) => {
   res.render("pagamento");
 });
+
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.userId) {
+    return next();
+  }
+
+  // if (req.session) {
+  //   req.session.error = "Você precisa estar logado para acessar esta página.";
+  // }
+  res.redirect("/login");
+}
 
 router.post("/register", async (req, res) => {
   const {
@@ -216,10 +230,10 @@ router.post("/login", async (req, res) => {
       `SELECT * FROM profissionais WHERE email = $1`,
       [email]
     );
-    let user;
+    //let user;
     // Se encontrado na tabela de clientes
     if (clientResult.rows.length > 0) {
-      user = clientResult.rows[0];
+    const  user = clientResult.rows[0];
     }
     // Se encontrado na tabela de profissionais
     else if (professionalResult.rows.length > 0) {
@@ -232,13 +246,64 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(senha, user.senha); // Alterar 'password' para 'senha'
     if (!isMatch) {
       return res.status(400).json({ message: "Credenciais inválidas" });
+    }else{
+      req.session.user = {id: user.id, email: user.email};
+      return res.redirect('/home');
     }
+
+  
     res.json({ message: "Login realizado com sucesso!", user });
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     res.status(500).json({ message: "Erro ao fazer login." });
   }
 });
+
+// router.post("/login", async (req, res) => {
+//   const { email, senha } = req.body;
+
+//   try {
+//     const clientResult = await pool.query(
+//       `SELECT * FROM clientes WHERE email = $1`,
+//       [email]
+//     );
+//     const professionalResult = await pool.query(
+//       `SELECT * FROM profissionais WHERE email = $1`,
+//       [email]
+//     );
+
+//     let user;
+
+//     if (clientResult.rows.length > 0) {
+//       user = clientResult.rows[0];
+//     } else if (professionalResult.rows.length > 0) {
+//       user = professionalResult.rows[0];
+//     } else {
+//       return res.status(400).json({ message: "Usuário não encontrado." });
+//     }
+
+//     const isMatch = await bcrypt.compare(senha, user.senha);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Credenciais inválidas" });
+//     }
+
+//     // Certifique-se de que `req.session` existe
+//     if (!req.session) {
+//       console.error("Sessão não inicializada corretamente");
+//       return res.status(500).json({ message: "Erro de sessão no servidor" });
+//     }
+
+//     // Armazena o userId na sessão para autenticação
+//     req.session.user = { id: user.id, email: user.email };
+
+//     // Redireciona para a página home após login bem-sucedido
+//     return res.redirect("/home");
+//   } catch (error) {
+//     console.error("Erro ao fazer login:", error);
+//     res.status(500).json({ message: "Erro ao fazer login." });
+//   }
+// });
+
 
 
 router.post("/forgot-password", async (req, res) => {
@@ -411,33 +476,80 @@ router.post("/pagamento", (req, res) => {
 
 // Rota para listar profissionais
 // 
-router.get("/", async (req, res) => {
+router.get("/home",  async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM profissionais"); // Busca todos os profissionais
     const profissionais = result.rows; // Obtém os dados
-    res.render("index", { profissionais }); // Renderiza a página principal e passa os dados
+    res.render("home", { profissionais }); // Renderiza a página principal e passa os dados
   } catch (error) {
     console.error("Erro ao buscar profissionais:", error);
     res.status(500).send("Erro ao buscar profissionais."); // Tratamento de erro
   }
 });
 
-// Rota para buscar detalhes de um profissional
-router.get("/profissionais/:id", async (req, res) => {
-  const { id } = req.params;
+// Rota para mostrar detalhes do profissional e horários disponíveis
+router.get('/detalhes-profissional/:id', async (req, res) => {
+  const profissionalId = req.params.id; // Obtém o ID do profissional da URL
+
   try {
-    const result = await pool.query("SELECT * FROM profissionais WHERE id = $1", [id]);
-    const profissional = result.rows[0]; // Obtém os dados do profissional
-    if (profissional) {
-      res.json(profissional); // Retorna os detalhes como JSON
-    } else {
-      res.status(404).send("Profissional não encontrado."); // Profissional não encontrado
-    }
+    // Busca os detalhes do profissional
+    const profissionalResult = await pool.query("SELECT * FROM profissionais WHERE id = $1", [profissionalId]);
+    const profissional = profissionalResult.rows[0];
+
+    // Busca os horários disponíveis para esse profissional
+    const horariosResult = await pool.query("SELECT horario FROM horarios_disponiveis WHERE profissional_id = $1", [profissionalId]);
+    const horariosDisponiveis = horariosResult.rows; // Obtém os horários disponíveis
+
+    // Renderiza a página de detalhes do profissional com os horários disponíveis
+    res.render('detalhes-profissional', {
+      profissional,
+      horariosDisponiveis
+    });
   } catch (error) {
-    console.error("Erro ao buscar profissional:", error);
-    res.status(500).send("Erro ao buscar profissional."); // Tratamento de erro
+    console.error("Erro ao buscar detalhes do profissional:", error);
+    res.status(500).send("Erro ao buscar detalhes do profissional.");
   }
 });
+
+
+// router.post("/agendar-consulta", isAuthenticated, async (req, res) => {
+//   const { horarioSelecionado, precoConsulta } = req.body; // 'precoConsulta' será usado como 'valor'
+//   const clienteId = req.session.userId; // Obtém o clienteId da sessão
+//   const profissionalId = req.body.profissionalId;
+
+//   try {
+//     // Insere a nova consulta no banco de dados
+//     await pool.query(
+//       "INSERT INTO consultas (profissional_id, cliente_id, horario, valor) VALUES ($1, $2, $3, $4)",
+//       [profissionalId, clienteId, horarioSelecionado, precoConsulta]
+//     );
+
+//     // Responde com uma mensagem de sucesso
+//     res.status(200).send("Consulta agendada com sucesso!");
+//   } catch (error) {
+//     console.error("Erro ao agendar consulta:", error);
+//     res.status(500).send("Erro ao agendar consulta.");
+//   }
+// });
+router.post("/agendar-consulta", async (req, res) => {
+  const { horarioSelecionado, precoConsulta } = req.body; // 'precoConsulta' será usado como 'valor'
+  //const clienteId = req.session.userId; // Obtém o clienteId da sessão
+  const profissionalId = req.body.profissionalId;
+
+  try {
+    // Insere a nova consulta no banco de dados
+    await pool.query(
+      "INSERT INTO consultas (profissional_id, cliente_id, horario, valor) VALUES ($1, $2, $3, $4)",
+      [profissionalId, clienteId, horarioSelecionado, precoConsulta]
+    );
+
+    res.status(200).send("Consulta agendada com sucesso!");
+  } catch (error) {
+    console.error("Erro ao agendar consulta:", error);
+    res.status(500).send("Erro ao agendar consulta.");
+  }
+});
+
 
 
 module.exports = router;

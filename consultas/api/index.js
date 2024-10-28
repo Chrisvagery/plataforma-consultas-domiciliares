@@ -1,5 +1,6 @@
 
 const express = require("express");
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -19,6 +20,24 @@ const db = require("./db");
 // Importar as rotas
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
+// const agendarRoutes = require("./routes/agendar");
+// app.use(agendarRoutes);
+
+
+// Configure o middleware de sessão
+app.use(
+  session({
+    secret: "seuSegredoSeguro", // Use um segredo seguro para a sessão
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // Defina como true se estiver usando HTTPS
+  })
+);
+app.get('/' , (req, res)=>{
+  const user = req.session.user;
+  res.render('home', { user});
+});
+
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

@@ -23,7 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     if (response.ok) {
       alert("Login realizado com sucesso!");
       // Redirecionar ou carregar a próxima página
-      window.location.href = "/";
+      window.location.href = "/home";
     } else {
       alert("Erro ao realizar login: " + result.message);
     }
