@@ -6,11 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/detalhes-profissional.css">
     <title>Detalhes do Profissional</title>
+    <style>
+      .horarios {
+        list-style: none;
+        padding: 0;
+      }
+
+      .horarios li {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      .horario-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #333;
+        background-color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .horario-btn.active {
+        background-color: #4CAF50;
+        /* Cor ao selecionar */
+        color: #fff;
+        border: 2px solid #4CAF50;
+      }
+
+      .horario-text {
+        margin-left: 10px;
+        font-size: 16px;
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
-      <h1>Horários Disponíveis</h1>
+      <h1>Detalhes do Profissional</h1>
 
       <div class="profissional-info">
         <h2>Profissional: <%= profissional.nome %>
@@ -18,16 +55,33 @@
       </div>
 
       <h2>Horários Disponíveis</h2>
+      <!-- <ul class="horarios">
+        <% horariosDisponiveis.forEach(horario=> { %>
+          <li>
+            <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
+              &#x25CF; 
+            </button>
+            <span class="horario-text">
+              <%= new Date(horario.data_horario).toLocaleString('pt-BR', { timeZone: 'UTC' , year: 'numeric' ,
+                month: '2-digit' , day: '2-digit' , hour: '2-digit' , minute: '2-digit' }) %>
+            </span>
+          </li>
+          <% }) %>
+      </ul> -->
       <ul class="horarios">
         <% horariosDisponiveis.forEach(horario=> { %>
           <li>
-            <span>
-              <%= horario.horario %>
+            <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
+              &#x25CF;
+            </button>
+            <span class="horario-text">
+              <%= new Date(horario.data_horario).toLocaleString('pt-BR', { year: 'numeric' , month: '2-digit' , day: '2-digit'
+                , hour: '2-digit' , minute: '2-digit' , hour12: false }) %>
             </span>
-            <button onclick="selecionarHorario('<%= horario.horario %>')">Selecionar</button>
           </li>
           <% }) %>
       </ul>
+
 
       <h2>Preços</h2>
       <div class="planos">
@@ -50,17 +104,27 @@
 
       <h2>Agendar Consulta</h2>
       <form id="agendarForm" action="/agendar-consulta" method="POST" onsubmit="return validarFormulario()">
-        <input type="hidden" id="horarioSelecionado" name="horarioSelecionado" required>
+        <!-- <input type="hidden" id="horarioSelecionado" name="horarioSelecionado" required> -->
+        <input type="hidden" id="horarioSelecionado" name="dataHorarioSelecionado" required>
+
         <input type="hidden" id="precoConsulta" name="precoConsulta" required>
         <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
         <button type="submit">Confirmar Agendamento</button>
+        
       </form>
     </div>
 
     <button onclick="window.history.back()">Voltar</button>
 
     <script>
-      function selecionarHorario(horario) {
+      function selecionarHorario(element, horario) {
+        // Desativa todos os botões de horário
+        document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('active'));
+
+        // Ativa o botão selecionado
+        element.classList.add('active');
+
+        // Define o valor do horário selecionado
         document.getElementById('horarioSelecionado').value = horario;
         alert(`Horário ${horario} selecionado!`);
       }
