@@ -1,0 +1,98 @@
+/* Configurações padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+.unstyled {
+    all: unset;
+}
+
+html, body {
+    height: 100vh; /* 100% da altura da viewport */
+    width: 100%; /* 100% da largura */
+    background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
+    overflow: hidden;
+}
+
+/* Header: onde tem o botao de voltar */
+header {
+    padding: 40px 0 0 40px;
+}
+.btn-primary{
+    background-color: white; /* Sem cor de fundo */
+    text-decoration-color: black;
+    border: none; /* Sem borda */
+    transition: background-color 0.3s ease; /* Animação suave para a cor de fundo */
+}
+
+.btn-primary:hover{
+    background-color: white;
+}
+
+
+/* ------------------ */
+/*        Main        */
+/* ------------------ */
+
+
+/*Parte preta que fica atras do formulario de CADASTRO*/
+.fundo{
+    padding: 10px;
+    padding-right: 300px;
+    border-radius: 50px;
+    background: #242424;
+}
+
+
+/*formulario de login*/
+.div-esqueceu{
+    min-height: 80vh; /* Define a altura mínima como 90% da altura da viewport */
+}
+
+.esqueceu-senha{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 260px;
+    height: 450px;
+    border-radius: 40px;
+}
+
+.parte-branca{
+    background-color: white;
+    padding: 40px;
+    border-radius: 40px;
+}
+
+/* Botao "entrar"*/
+.custom-button {
+    border-radius: 150px;
+    background-color: #030101;
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda */
+    padding: 10px 0; /* Espaçamento interno vertical */
+    text-align: center; /* Centraliza o texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: block; /* Faz o botão ocupar toda a largura disponível */
+    width: 100%; /* Ocupa 100% da largura do elemento pai */
+    margin-top: 20px;
+    font-size: 16px; /* Tamanho da fonte */
+    transition-duration: 0.4s; /* Efeito de transição */
+
+}
+
+/* ------------------ */
+/*        TRANSICAO       */
+/* ------------------ */
+
+.telas {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.tela {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
