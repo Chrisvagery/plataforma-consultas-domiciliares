@@ -82,17 +82,3 @@ header {
     transition-duration: 0.4s; /* Efeito de transição */
 
 }
-
-/* ------------------ */
-/*        TRANSICAO       */
-/* ------------------ */
-
-.telas {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-.tela {
-    min-width: 100%;
-    box-sizing: border-box;
-    padding: 20px;
-}

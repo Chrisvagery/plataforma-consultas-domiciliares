@@ -1,0 +1,55 @@
+body {
+    font-family: 'Arial', sans-serif; /* Define uma fonte mais limpa */
+    background-color: #f8f9fa; /* Cor de fundo clara */
+
+}
+header {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco com leve opacidade */
+    backdrop-filter: blur(10px); /* Efeito de desfoque */
+    position: relative; /* Necessário para o backdrop-filter funcionar corretamente */
+    z-index: 1000; /* Garante que o cabeçalho fique acima de outros elementos */
+}
+
+
+#logo h1 {
+    font-size: 1rem; /* Tamanho da fonte do logo */
+    color: black; /* Cor do texto do logo */
+    margin: 0; /* Remove margens */
+}
+
+.nav-link {
+    padding: 10px 15px; /* Aumenta o espaço ao redor dos links */
+    transition: background-color 0.3s ease; /* Transição suave para o fundo */
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Fundo claro ao passar o mouse */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+.dropdown-menu {
+    border-radius: 0; /* Remove bordas arredondadas no dropdown */
+}
+
+.dropdown-item {
+    display: flex; /* Para alinhar a imagem e o texto */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.dropdown-item img {
+    width: 40px; /* Define a largura da imagem do perfil */
+    height: 40px; /* Define a altura da imagem do perfil */
+    border-radius: 50%; /* Imagem redonda */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Cor de fundo do botão secundário */
+    border-color: #5a6268; /* Cor da borda do botão */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Cor de fundo ao passar o mouse */
+    border-color: #545b62; /* Cor da borda ao passar o mouse */
+}

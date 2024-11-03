@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Profissionais</title>
+
+    <!-- Link do Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Link do Estilo CSS -->
+    <link rel="stylesheet" href="/consultas/public/styles/PaginaBuscarProfissional/estilo.css">
+</head>
+
+<body>
+    <!-- header: onde vai ter o botao para voltar -->
+    <header class="p-4">
+        <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
+    </header>
+
+    <!-- Container do formulário de busca -->
+    <div class="container mt-5">
+        <div class="search-container p-4 bg-white rounded shadow-sm">
+            <form id="search-form">
+
+                <h1 class="h5 mb-0">Buscar Profissionais</h1>
+                <div class="mb-3">
+                    <label for="profession" class="form-label">Profissão:</label>
+                    <select id="profession" name="profession" class="form-select">
+                        <option value="">Selecione...</option>
+                        <option value="enfermeiro">Enfermeiro</option>
+                        <option value="fisioterapeuta">Fisioterapeuta</option>
+                        <option value="nutricionista">Nutricionista</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Localização:</label>
+                    <select id="location" name="location" class="form-select">
+                        <option value="">Selecione...</option>
+                        <option value="sao_paulo">São Paulo</option>
+                        <option value="rio_de_janeiro">Rio de Janeiro</option>
+                        <option value="curitiba">Curitiba</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="filterResults()" class="btn btn-primary w-100">Buscar</button>
+            </form>
+        </div>
+
+        <!-- Resultados da busca -->
+        <div id="results" class="results mt-4 row">
+            <!-- Perfis encontrados aparecerão aqui -->
+        </div>
+    </div>
+
+    <!-- JavaScript do Bootstrap e Script Customizado -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/consultas/public/javascript/jsPaginaBuscaProfissional/resultados.js"></script>
+</body>
+
+</html>

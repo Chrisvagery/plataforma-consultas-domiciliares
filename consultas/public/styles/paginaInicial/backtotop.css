@@ -1,0 +1,25 @@
+.back-to-top {
+    background: #007bff; /* Cor de fundo azul */
+    color: #fff; /* Cor do texto em branco */
+    border: none; /* Remove a borda */
+    border-radius: 50%; /* Torna o botão redondo */
+    width: 50px; /* Largura do botão */
+    height: 50px; /* Altura do botão */
+    cursor: pointer; 
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex; /* Alinha o conteúdo do botão ao centro */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s linear, transform 0.3s; /* Animações suaves */
+    transform: translateY(100%);
+}
+
+.back-to-top.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}

@@ -1,0 +1,37 @@
+.dropdown {
+    position: relative; /* Para que o dropdown-menu seja posicionado corretamente */
+}
+
+.dropdown-toggle {
+    background-color: #6c757d; /* Cor do botão */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda do botão */
+    padding: 10px 15px; /* Padding do botão */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+}
+
+.dropdown-menu {
+    display: none; /* Oculta o menu inicialmente */
+    position: absolute; /* Para posicionamento relativo ao botão */
+    background-color: white; /* Cor de fundo do menu */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra do menu */
+    border-radius: 5px; /* Cantos arredondados */
+    z-index: 1000; /* Para garantir que o menu fique sobre outros elementos */
+}
+
+.dropdown-menu img {
+    width: 100px; /* Largura da imagem */
+    height: auto; /* Manter proporções da imagem */
+    border-radius: 50%; /* Tornar a imagem circular */
+}
+
+.dropdown-item {
+    display: block; /* Exibir como bloco para ocupar toda a largura */
+    padding: 10px 15px; /* Padding para os itens do menu */
+    color: #333; /* Cor do texto */
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+}

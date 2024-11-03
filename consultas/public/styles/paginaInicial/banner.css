@@ -1,0 +1,13 @@
+#banner-content {
+    background-color: #f0f0f0; /* Cor de fundo desejada */
+    width: 100%; /* Garante que ocupe toda a largura da tela */
+    height: 600px; /* Definindo a altura para 300 pixels */
+    display: flex; /* Usado para centralizar o conteúdo */
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; /* Centraliza o conteúdo verticalmente */
+}
+
+
+#banner-content .container {
+    max-width: none; /* Remove o limite de largura do container Bootstrap */
+}
