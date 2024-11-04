@@ -14,44 +14,50 @@
 </head>
 
 <body>
-    <!-- header: onde vai ter o botao para voltar -->
+    <!-- header: onde vai ter o botão para voltar -->
     <header class="p-4">
         <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
     </header>
 
     <!-- Container do formulário de busca -->
-    <div class="container mt-5">
-        <div class="search-container p-4 bg-white rounded shadow-sm">
-            <form id="search-form">
-
-                <h1 class="h5 mb-0">Buscar Profissionais</h1>
-                <div class="mb-3">
-                    <label for="profession" class="form-label">Profissão:</label>
-                    <select id="profession" name="profession" class="form-select">
-                        <option value="">Selecione...</option>
-                        <option value="enfermeiro">Enfermeiro</option>
-                        <option value="fisioterapeuta">Fisioterapeuta</option>
-                        <option value="nutricionista">Nutricionista</option>
-                    </select>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Formulário de busca -->
+                <div class="search-container p-4 bg-white rounded shadow-sm">
+                    <form id="search-form">
+                        <h1 class="h5 mb-0">Buscar Profissionais</h1>
+                        <div class="mb-3">
+                            <label for="profession" class="form-label">Profissão:</label>
+                            <select id="profession" name="profession" class="form-select">
+                                <option value="">Selecione...</option>
+                                <option value="enfermeiro">Enfermeiro</option>
+                                <option value="fisioterapeuta">Fisioterapeuta</option>
+                                <option value="nutricionista">Nutricionista</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Localização:</label>
+                            <select id="location" name="location" class="form-select">
+                                <option value="">Selecione...</option>
+                                <option value="sao_paulo">São Paulo</option>
+                                <option value="rio_de_janeiro">Rio de Janeiro</option>
+                                <option value="curitiba">Curitiba</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="filterResults()" class="btn btn-primary w-100">Buscar</button>
+                    </form>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label for="location" class="form-label">Localização:</label>
-                    <select id="location" name="location" class="form-select">
-                        <option value="">Selecione...</option>
-                        <option value="sao_paulo">São Paulo</option>
-                        <option value="rio_de_janeiro">Rio de Janeiro</option>
-                        <option value="curitiba">Curitiba</option>
-                    </select>
-                </div>
-
-                <button type="button" onclick="filterResults()" class="btn btn-primary w-100">Buscar</button>
-            </form>
-        </div>
-
-        <!-- Resultados da busca -->
-        <div id="results" class="results mt-4 row">
-            <!-- Perfis encontrados aparecerão aqui -->
+            <div class="col-md-8">
+                <!-- Resultados da busca -->
+                <a href="/consultas/views/codigo/perfilprofissional.html">
+                    <div id="results" class="results p-3 border rounded">
+                        <!-- Perfis encontrados aparecerão aqui -->
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 

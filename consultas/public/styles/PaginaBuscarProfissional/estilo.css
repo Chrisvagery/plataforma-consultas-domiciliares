@@ -13,6 +13,7 @@ html, body {
   height: 100vh; /* 100% da altura da viewport */
   width: 100%; /* 100% da largura */
   background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
+  overflow: hidden;
 }
 
 /* Header: onde tem o botao de voltar */
@@ -30,14 +31,18 @@ header {
   background-color: white;
 }
 
+/* Aqui começa a edição dos formulários */
+
+.container{
+  height: auto;
+  overflow: hidden;
+}
 
 .search-container {
   background-color: #f3f3f3;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  margin-bottom: 20px;
 }
 
 .search-container label {
@@ -67,7 +72,9 @@ header {
 }
 
 .results {
-  width: 300px;
+  background-color: #fff; /* Fundo branco para os resultados */
+  min-height: 700px;
+  overflow: hidden;
 }
 
 .result-item {

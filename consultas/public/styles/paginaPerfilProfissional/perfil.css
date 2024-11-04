@@ -1,0 +1,55 @@
+/* Configurações padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.unstyled {
+    all: unset;
+}
+
+html,
+body {
+    height: 100vh;
+    /* 100% da altura da viewport */
+    width: 100%;
+    /* 100% da largura */
+    background-color: #D2D9DF;
+    /* Cor de fundo da página (ex: cinza claro) */
+    overflow: hidden;
+}
+
+/* Header: onde tem o botao de voltar */
+header {
+    padding: 40px 0 0 40px;
+}
+
+.btn-primary {
+    background-color: white;
+    /* Sem cor de fundo */
+    text-decoration-color: black;
+    border: none;
+    /* Sem borda */
+    transition: background-color 0.3s ease;
+    /* Animação suave para a cor de fundo */
+}
+
+.btn-primary:hover {
+    background-color: white;
+}
+
+/* aqui começa ass edições do perfil do profissional */
+.profile-card {
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.details {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
