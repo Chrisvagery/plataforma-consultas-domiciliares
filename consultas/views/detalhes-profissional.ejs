@@ -1,3 +1,173 @@
+<!-- 
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/detalhes-profissional.css">
+  <title>Detalhes do Profissional</title>
+  <style>
+    .horarios {
+      list-style: none;
+      padding: 0;
+    }
+    .horarios li {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .horario-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .horario-btn.active {
+      background-color: #4CAF50;
+      color: #fff;
+      border: 2px solid #4CAF50;
+    }
+    .horario-text {
+      margin-left: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Detalhes do Profissional</h1>
+
+    <div class="profissional-info">
+      <h2>Profissional: <%= profissional.nome %></h2>
+    </div>
+
+    <h2>Horários Disponíveis</h2>
+    <ul class="horarios">
+      <% horariosDisponiveis.forEach(horario => { %>
+        <li>
+          <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
+            &#x25CF;
+          </button>
+          <span class="horario-text">
+            <%= new Date(horario.data_horario).toLocaleString('pt-BR', { year: 'numeric' , month: '2-digit' , day: '2-digit', hour: '2-digit' , minute: '2-digit', hour12: false }) %>
+          </span>
+        </li>
+      <% }) %>
+    </ul>
+
+    <h2>Preços</h2>
+    <div class="planos">
+      <div class="plano">
+        <h3>Consulta Simples</h3>
+        <p>Preço: R$ 100,00</p>
+        <button onclick="selecionarPreco(100)">Selecionar</button>
+      </div>
+      <div class="plano">
+        <h3>Consulta Avançada</h3>
+        <p>Preço: R$ 150,00</p>
+        <button onclick="selecionarPreco(150)">Selecionar</button>
+      </div>
+      <div class="plano">
+        <h3>Pacote de 5 Consultas</h3>
+        <p>Preço: R$ 400,00</p>
+        <button onclick="selecionarPreco(400)">Selecionar</button>
+      </div>
+    </div>
+    <div id="paypal-button-container"></div>
+
+    <h2>Agendar Consulta</h2>
+    <form id="agendarForm" action="/agendar-consulta" method="POST" onsubmit="return validarFormulario()">
+      <input type="hidden" id="horarioSelecionado" name="dataHorarioSelecionado" required>
+      <input type="hidden" id="precoConsulta" name="precoConsulta" required>
+      <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
+      <button type="submit">Confirmar Agendamento</button>
+    </form>
+  </div>
+
+  <button onclick="window.history.back()">Voltar</button>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=AaTZmQU_-ISJp53Kx5HwPSTt8epEmOyadfoJkkbCK0XmAcTTlufKLtKsZzXjNaAfN8NbpmLJjJme8WDa&currency=BRL"></script>
+
+  <script>
+    function selecionarHorario(element, horario) {
+      document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      document.getElementById('horarioSelecionado').value = horario;
+      alert(`Horário ${horario} selecionado!`);
+    }
+
+    function selecionarPreco(preco) {
+      document.getElementById('precoConsulta').value = preco;
+      alert(`Preço selecionado: R$ ${preco},00!`);
+      renderPaypalButton(preco); // Renderiza o botão PayPal após a seleção do preço
+    }
+
+    function validarFormulario() {
+      const horario = document.getElementById('horarioSelecionado').value;
+      const valor = document.getElementById('precoConsulta').value;
+      if (!horario || !valor) {
+        alert("Por favor, selecione o horário e o preço da consulta.");
+        return false;
+      }
+      return true;
+    }
+
+    function renderPaypalButton(amount) {
+      document.getElementById("paypal-button-container").innerHTML = ""; // Remove o botão existente
+
+      paypal.Buttons({
+        style: {
+          layout: "vertical",
+          color: "blue",
+          shape: "rect",
+          label: "paypal",
+        },
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: amount.toFixed(2),
+              },
+            }],
+          });
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function (details) {
+            alert("Transação concluída por " + details.payer.name.given_name + "!");
+            fetch("/paypal-transaction-complete", {
+              method: "post",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify({
+                orderID: data.orderID,
+                payerID: data.payerID,
+                paymentDetails: details,
+              }),
+            })
+            .then((response) => response.json())
+            .then((data) => console.log("Resposta do servidor:", data))
+            .catch((error) => console.error("Erro ao enviar dados:", error));
+          });
+        },
+        onError: function (err) {
+          console.error("Erro no pagamento:", err);
+          alert("Ocorreu um erro ao processar o pagamento. Tente novamente.");
+        },
+      }).render("#paypal-button-container");
+    }
+  </script>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -7,6 +177,40 @@
     <link rel="stylesheet" href="/styles/detalhes-profissional.css">
     <title>Detalhes do Profissional</title>
     <style>
+      .container {
+        display: flex;
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .left-section {
+        flex: 1;
+        background-color: #6a0dad;
+        color: white;
+        padding: 10px;
+        max-height: 600px; /* Definindo uma altura máxima */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .right-section {
+        flex: 1;
+        padding: 20px;
+      }
+
+      .profissional-info img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
       .horarios {
         list-style: none;
         padding: 0;
@@ -33,7 +237,6 @@
 
       .horario-btn.active {
         background-color: #4CAF50;
-        /* Cor ao selecionar */
         color: #fff;
         border: 2px solid #4CAF50;
       }
@@ -42,89 +245,129 @@
         margin-left: 10px;
         font-size: 16px;
       }
+
+      .planos-section {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+
+      .planos {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .plano {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .plano button {
+        background-color: #6a0dad;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #paypal-button-container {
+        margin-top: 20px;
+      }
     </style>
   </head>
 
   <body>
+    <!-- Container principal: Foto, Horários e Informações do Profissional -->
     <div class="container">
-      <h1>Detalhes do Profissional</h1>
+      <div class="left-section">
+        <div class="profissional-info">
+          <% if (profissional.foto) { %>
+            <img src="data:image/jpeg;base64,<%= profissional.foto.toString('base64') %>"
+              alt="Foto de <%= profissional.nome %>">
+            <% } else { %>
+              <img src="/images/default-profile.png" alt="Foto padrão">
+              <% } %>
+                <h2>Profissional: <%= profissional.nome %>
+                </h2>
+                <p>
+                  Bem-vindo à nossa plataforma! Aqui, nos dedicamos a oferecer serviços de alta qualidade para atender suas necessidades
+                  de maneira personalizada e eficaz.<br>
+                  Nossa equipe de profissionais está sempre pronta para proporcionar a melhor experiência, com foco no cuidado, atenção
+                  e compromisso com o seu bem-estar.<br>
+                  Aproveite nossos serviços e agende a sua consulta para descobrir como podemos ajudar você a alcançar seus
+                  objetivos.<br>
+                  Estamos aqui para você!
+                </p>
 
-      <div class="profissional-info">
-        <h2>Profissional: <%= profissional.nome %>
-        </h2>
+        </div>
       </div>
 
-      <h2>Horários Disponíveis</h2>
-      <!-- <ul class="horarios">
-        <% horariosDisponiveis.forEach(horario=> { %>
-          <li>
-            <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
-              &#x25CF; 
-            </button>
-            <span class="horario-text">
-              <%= new Date(horario.data_horario).toLocaleString('pt-BR', { timeZone: 'UTC' , year: 'numeric' ,
-                month: '2-digit' , day: '2-digit' , hour: '2-digit' , minute: '2-digit' }) %>
-            </span>
-          </li>
-          <% }) %>
-      </ul> -->
-      <ul class="horarios">
-        <% horariosDisponiveis.forEach(horario=> { %>
-          <li>
-            <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
-              &#x25CF;
-            </button>
-            <span class="horario-text">
-              <%= new Date(horario.data_horario).toLocaleString('pt-BR', { year: 'numeric' , month: '2-digit' , day: '2-digit'
-                , hour: '2-digit' , minute: '2-digit' , hour12: false }) %>
-            </span>
-          </li>
-          <% }) %>
-      </ul>
+      <div class="right-section">
+        <h2>Horários Disponíveis</h2>
+        <ul class="horarios">
+          <% horariosDisponiveis.forEach(horario=> { %>
+            <li>
+              <button class="horario-btn" onclick="selecionarHorario(this, '<%= horario.data_horario %>')">
+                &#x25CF;
+              </button>
+              <span class="horario-text">
+                <%= new Date(horario.data_horario).toLocaleString('pt-BR', { year: 'numeric' , month: '2-digit' ,
+                  day: '2-digit' , hour: '2-digit' , minute: '2-digit' , hour12: false }) %>
+              </span>
+            </li>
+            <% }) %>
+        </ul>
+        <!-- <form id="agendarForm" action="/agendar-consulta" method="POST" onsubmit="return validarFormulario()">
+          <input type="hidden" id="horarioSelecionado" name="dataHorarioSelecionado" required>
+          <input type="hidden" id="precoConsulta" name="precoConsulta" required>
+          <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
+          <button type="submit">Confirmar Agendamento</button>
+        </form> -->
+      </div>
+    </div>
 
-
-      <h2>Preços</h2>
+    <!-- Seção de Preços e Forma de Pagamento, fora do container principal -->
+    <div class="planos-section">
+      <h2>Escolha o preço da consulta</h2>
       <div class="planos">
         <div class="plano">
-          <h3>Consulta Simples</h3>
-          <p>Preço: R$ 100,00</p>
+          <span>Consulta Simples - R$100,00</span>
           <button onclick="selecionarPreco(100)">Selecionar</button>
         </div>
         <div class="plano">
-          <h3>Consulta Avançada</h3>
-          <p>Preço: R$ 150,00</p>
+          <span>Consulta Avançada - R$150,00</span>
           <button onclick="selecionarPreco(150)">Selecionar</button>
         </div>
         <div class="plano">
-          <h3>Pacote de 5 Consultas</h3>
-          <p>Preço: R$ 400,00</p>
+          <span>Pacote de 5 Consultas - R$400,00</span>
           <button onclick="selecionarPreco(400)">Selecionar</button>
         </div>
       </div>
-
-      <h2>Agendar Consulta</h2>
+      <div id="paypal-button-container"></div>
       <form id="agendarForm" action="/agendar-consulta" method="POST" onsubmit="return validarFormulario()">
-        <!-- <input type="hidden" id="horarioSelecionado" name="horarioSelecionado" required> -->
-        <input type="hidden" id="horarioSelecionado" name="dataHorarioSelecionado" required>
-
-        <input type="hidden" id="precoConsulta" name="precoConsulta" required>
-        <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
-        <button type="submit">Confirmar Agendamento</button>
-        
-      </form>
+          <input type="hidden" id="horarioSelecionado" name="dataHorarioSelecionado" required>
+          <input type="hidden" id="precoConsulta" name="precoConsulta" required>
+          <input type="hidden" id="profissionalId" name="profissionalId" value="<%= profissional.id %>">
+          <button type="submit">Confirmar Agendamento</button>
+        </form>
     </div>
 
-    <button onclick="window.history.back()">Voltar</button>
+    <!-- PayPal SDK -->
+    <script
+      src="https://www.paypal.com/sdk/js?client-id=AaTZmQU_-ISJp53Kx5HwPSTt8epEmOyadfoJkkbCK0XmAcTTlufKLtKsZzXjNaAfN8NbpmLJjJme8WDa&currency=BRL"></script>
 
     <script>
       function selecionarHorario(element, horario) {
-        // Desativa todos os botões de horário
         document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('active'));
-
-        // Ativa o botão selecionado
         element.classList.add('active');
-
-        // Define o valor do horário selecionado
         document.getElementById('horarioSelecionado').value = horario;
         alert(`Horário ${horario} selecionado!`);
       }
@@ -132,19 +375,65 @@
       function selecionarPreco(preco) {
         document.getElementById('precoConsulta').value = preco;
         alert(`Preço selecionado: R$ ${preco},00!`);
+        renderPaypalButton(preco); // Renderiza o botão PayPal após a seleção do preço
       }
 
       function validarFormulario() {
         const horario = document.getElementById('horarioSelecionado').value;
         const valor = document.getElementById('precoConsulta').value;
-
         if (!horario || !valor) {
           alert("Por favor, selecione o horário e o preço da consulta.");
           return false;
         }
         return true;
       }
+
+      function renderPaypalButton(amount) {
+        document.getElementById("paypal-button-container").innerHTML = ""; // Remove o botão existente
+
+        paypal.Buttons({
+          style: {
+            layout: "vertical",
+            color: "blue",
+            shape: "rect",
+            label: "paypal",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: amount.toFixed(2),
+                },
+              }],
+            });
+          },
+          onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+              alert("Transação concluída por " + details.payer.name.given_name + "!");
+              fetch("/paypal-transaction-complete", {
+                method: "post",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify({
+                  orderID: data.orderID,
+                  payerID: data.payerID,
+                  paymentDetails: details,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => console.log("Resposta do servidor:", data))
+                .catch((error) => console.error("Erro ao enviar dados:", error));
+            });
+          },
+          onError: function (err) {
+            console.error("Erro no pagamento:", err);
+            alert("Ocorreu um erro ao processar o pagamento. Tente novamente.");
+          },
+        }).render("#paypal-button-container"); // Renderiza o botão PayPal
+      }
     </script>
   </body>
 
 </html>
+
