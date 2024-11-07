@@ -1,0 +1,60 @@
+/* Configurações padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.unstyled {
+    all: unset;
+}
+
+html, body {
+    height: 100vh; /* 100% da altura da viewport */
+    width: 100%; /* 100% da largura */
+    background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
+    overflow: hidden;
+}
+
+
+/* Header: onde tem o botão de voltar */
+header {
+    padding: 40px 0 0 40px;
+}
+
+.btn-primary {
+    background-color: white; /* Sem cor de fundo */
+    text-decoration-color: black;
+    border: none; /* Sem borda */
+    transition: background-color 0.3s ease; /* Animação suave para a cor de fundo */
+}
+
+.btn-primary:hover {
+    background-color: white;
+}
+
+/* ------------------ */
+/*        Main        */
+/* ------------------ */
+
+/*Cards do cadastro*/
+/*PROFISSIONAL*/
+.fundo-profissional{
+    padding: 10px;
+    padding-right: 300px;
+    border-radius: 50px;
+    background: #242424;
+    color: white;
+
+}
+
+/*CLIENTE*/
+.fundo-cliente{
+    padding: 10px;
+    padding-right: 300px;
+    border-radius: 50px;
+    background: #242424;
+    color: white;
+
+}
