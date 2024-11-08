@@ -10,10 +10,14 @@
     all: unset;
 }
 
-html, body {
-    height: 100vh; /* 100% da altura da viewport */
-    width: 100%; /* 100% da largura */
-    background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
+html,
+body {
+    height: 100vh;
+    /* 100% da altura da viewport */
+    width: 100%;
+    /* 100% da largura */
+    background-color: #D2D9DF;
+    /* Cor de fundo da página (ex: cinza claro) */
     overflow: hidden;
 }
 
@@ -24,10 +28,13 @@ header {
 }
 
 .btn-primary {
-    background-color: white; /* Sem cor de fundo */
+    background-color: white;
+    /* Sem cor de fundo */
     text-decoration-color: black;
-    border: none; /* Sem borda */
-    transition: background-color 0.3s ease; /* Animação suave para a cor de fundo */
+    border: none;
+    /* Sem borda */
+    transition: background-color 0.3s ease;
+    /* Animação suave para a cor de fundo */
 }
 
 .btn-primary:hover {
@@ -37,24 +44,72 @@ header {
 /* ------------------ */
 /*        Main        */
 /* ------------------ */
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 80vh; /* Ocupa toda a altura da tela */
+}
 
-/*Cards do cadastro*/
-/*PROFISSIONAL*/
-.fundo-profissional{
-    padding: 10px;
-    padding-right: 300px;
-    border-radius: 50px;
-    background: #242424;
-    color: white;
+
+.linha {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
 }
 
-/*CLIENTE*/
-.fundo-cliente{
-    padding: 10px;
-    padding-right: 300px;
-    border-radius: 50px;
-    background: #242424;
-    color: white;
+.cartao1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 450px;
+    border-radius: 40px;
+    background: #FFD3D4;
+    padding: 40px;
+    margin: 20px;
+    transition: 0.2s;
+}
+.cartao1:hover{
+    transform: scale(1.15);
+}
 
+.cartao2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 450px;
+    border-radius: 40px;
+    background: #fff;
+    padding: 40px;
+    margin: 20px;
+    transition: 0.2s;
+}
+.cartao2:hover{
+    transform: scale(1.15);
+}
+
+
+/* Estilos para a imagem dentro do card */
+.fundo-img {
+    height: 200px;
+    width: 200px;
+    border-radius: 4px;
+   margin: 20px;
+}
+
+a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: inherit; /* Mantém a cor original do texto */
+}
+
+a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: inherit; /* Mantém a cor original do texto */
 }

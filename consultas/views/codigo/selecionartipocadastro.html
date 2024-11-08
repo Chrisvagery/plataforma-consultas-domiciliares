@@ -18,34 +18,37 @@
 </head>
 
 <body>
-    <!-- header: onde vai ter o botão para voltar -->
+    <!-- header: onde vai ter o botao para voltar -->
     <header class="p-4">
-        <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left"></i></button>
+        <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
     </header>
     <!-- main: onde vai ter a parte de selecionar o tipo de cadastro-->
-    <main class="container my-4">
+    <main>
         <!-- Linha que vai conter os dois cards -->
-        <div class="row">
+        <div class="linha">
             <!-- Card de cadastro profissional -->
-            <div class="col-md-6">
-                <div class="card fundo-profissional">
-                    <div class="card-body">
-                        <h5 class="card-title">Cadastro Profissional</h5>
-                        <p class="card-text">Texto explicativo sobre o cadastro profissional.</p>
-                    </div>
+            <a href="/consultas/views/codigo/cadastroPessoal.html">
+                <div class="cartao1">
+                    <h5 class="card-title">Crie um perfil Profissional</h5>
+                    <p class="card-text">Texto explicativo sobre o cadastro profissional.</p>
+                    <img src="/consultas/imagens/Ativo 3.png" class="fundo-img" alt="Imagem do Cadastro Profissional">
                 </div>
-            </div>
+            </a>
 
-            <!-- Card de cadastro cliente-->
-            <div class="col-md-6">
-                <div class="card fundo-cliente">
-                    <div class="card-body">
-                        <h5 class="card-title">Cadastro Profissional</h5>
-                        <p class="card-text">Texto explicativo sobre o cadastro profissional.</p>
-                    </div>
+            <!-- Card de cadastro cliente -->
+
+            <a href="/consultas/views/codigo/cadastroPessoal.html">
+                <div class="cartao2">
+                    <h5 class="card-title">Crie um perfil Pessoal</h5>
+                    <p class="card-text">Texto explicativo sobre o cadastro cliente.</p>
+                    <img src="/consultas/imagens/1x/Ativo 4.png" class="fundo-img" alt="Imagem do Cadastro Cliente">
                 </div>
-            </div>
+            </a>
         </div>
+    </main>
+
+
+
     </main>
 
 
