@@ -1,0 +1,162 @@
+/* Configurações padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.unstyled {
+    all: unset;
+}
+
+html, body {
+    height: 100vh; /* 100% da altura da viewport */
+    width: 100%; /* 100% da largura */
+    background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
+    overflow: hidden;
+}
+
+/* Header: onde tem o botão de voltar */
+header {
+    padding: 40px 0 0 40px;
+}
+
+.btn-primary {
+    background-color: white; /* Sem cor de fundo */
+    text-decoration-color: black;
+    border: none; /* Sem borda */
+    transition: background-color 0.3s ease; /* Animação suave para a cor de fundo */
+}
+
+.btn-primary:hover {
+    background-color: white;
+}
+/* ------------------ */
+/*        Main        */
+/* ------------------ */
+
+/*  ---------------------- */
+/*   Formulário cadastro   */
+/*  ----------------------*/
+
+.titulo-cadastro {
+    padding: 10px 0; /* Espaçamento superior e inferior */
+
+    font-size: 2em;
+}
+
+.div-cadastro { /* Alterado para 'div-cadastro' */
+    min-height: 80vh; /* Define a altura mínima como 80% da altura da viewport */
+}
+
+.cadastro { /* Alterado para 'cadastro' */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 40px;
+}
+
+.parte-branca {
+    display: flex;
+    background-color: white;
+    padding: 20px;
+    border-radius: 40px;
+}
+/* Botão "cadastrar" */
+.custom-button {
+    border-radius: 150px;
+    background-color: #030101;
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda */
+    padding: 10px 0; /* Espaçamento interno vertical */
+    text-align: center; /* Centraliza o texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: block; /* Faz o botão ocupar toda a largura disponível */
+    width: 100%; /* Ocupa 100% da largura do elemento pai */
+    margin-top: 20px;
+    font-size: 16px; /* Tamanho da fonte */
+    transition-duration: 0.4s; /* Efeito de transição */
+}
+
+/*  ---------------------- */
+/*   Primeira Coluna  */
+/*  ----------------------*/
+
+.parte-preta{
+    padding: 20px;
+    background: #242424;
+    color: white;
+    border-radius: 20px;
+    max-height: 604px;
+}
+
+/*  ---------------------- */
+/*   BOtao     */
+/*  ----------------------*/
+
+.custom-button {
+    border-radius: 150px;
+    background-color: #030101;
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda */
+    padding: 10px 0; /* Espaçamento interno vertical */
+    text-align: center; /* Centraliza o texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: block; /* Faz o botão ocupar toda a largura disponível */
+    width: 100%; /* Ocupa 100% da largura do elemento pai */
+    margin-top: 20px;
+    font-size: 16px; /* Tamanho da fonte */
+    transition-duration: 0.4s; /* Efeito de transição */
+}
+
+.custom-button:hover{
+    background-color:blue;
+}
+
+/*  ---------------------- */
+/*   Endereço              */
+/*  ----------------------*/
+
+/* Estilo para o campo de entrada de CEP */
+#cep {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Definir uma altura fixa para a exibição do endereço */
+#enderecoSelecionado {
+    height: 80px; /* Ajuste a altura conforme necessário */
+    overflow-y: auto; /* Permite a rolagem caso o conteúdo seja maior que a altura definida */
+    border: 1px solid #ccc; /* Borda para demarcar a área */
+    padding: 10px; /* Espaçamento interno */
+    background-color: #f9f9f9; /* Cor de fundo */
+    border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Campo de Doenças Preexistentes */
+#doencas {
+    max-height: 150px; /* Definir altura máxima */
+    overflow-y: auto; /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+    padding: 10px; /* Espaçamento interno */
+}
+
+/* Campo de Alergias */
+#alergias {
+    max-height: 80px; /* Definir altura máxima */
+    overflow-y: auto; /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+    padding: 10px; /* Espaçamento interno */
+}
+
+/* Seleção de Tipos de Consultas */
+.consultas-container {
+    max-height: 90px; /* Definir altura máxima para a lista de checkboxes */
+    overflow-y: auto; /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ccc; /* Borda para demarcar a área */
+    border-radius: 5px; /* Bordas arredondadas */
+    background-color: #f9f9f9; /* Cor de fundo */
+}

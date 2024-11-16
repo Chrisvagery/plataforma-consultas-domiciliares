@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rose - Cadastro</title>
+    <title>Cadastro Pessoal</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -14,60 +14,201 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <!-- Link com CSS -->
-    <link rel="stylesheet" href="/consultas/public/styles/paginacadastroPessoal/cadastro.css">
+    <link rel="stylesheet" href="/consultas/public/styles/paginacadastroPessoal/cadastroPessoal.css">
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
     <!-- header: onde vai ter o botão para voltar -->
     <header class="p-4">
         <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
     </header>
+
     <!-- main: onde vai ter a parte de fazer o cadastro -->
     <main>
-        <div class="black"></div>
         <div class="container d-flex justify-content-center align-items-center div-cadastro">
-            <!-- Alterado para 'div-cadastro' -->
-            <div class="fundo">
-                <div class="parte-branca">
-                    <div class="card-body cadastro d-flex justify-content-center align-items-center">
-                        <!-- Alterado para 'cadastro' -->
-                        <h3 class="text-center mb-4">Cadastro</h3>
-                        <form onsubmit="return confirmarCadastro()">
-                            <div class="form-group">
-                                <label for="name">Seu Nome</label>
-                                <input type="text" class="form-control" id="name" placeholder="Insira seu nome aqui"
-                                    required>
-                                <small id="nameError" class="form-text text-danger d-none">Por favor, insira seu
-                                    nome.</small>
+            <div class="parte-branca">
+                <form class="container" onsubmit="return confirmarCadastro()">
+                    <div class="row">
+                        <!-- Coluna 1 -->
+                        <div class="col-md-4 parte-preta">
+                            <h3 class="text-center mb-2 titulo-cadastro">Cadastro Pessoal</h3>
+                            <div class="mb-2">
+                                <label for="nome" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="nome" placeholder="Nome" required>
+                                <small id="nomeError" class="text-danger d-none">Insira seu nome.</small>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Seu Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Insira seu email aqui"
-                                    required>
-                                <small id="emailError" class="form-text text-danger d-none">Por favor, insira um email
-                                    válido.</small>
+
+                            <div class="mb-2">
+                                <label for="cpf" class="form-label">CPF</label>
+                                <input type="text" class="form-control" id="cpf" placeholder="CPF" required>
+                                <small id="cpfError" class="text-danger d-none">Insira um CPF válido.</small>
                             </div>
-                            <div class="form-group">
-                                <label for="password">Sua Senha</label>
-                                <input type="password" class="form-control" id="password"
-                                    placeholder="Insira sua senha aqui" required minlength="6">
-                                <small id="passwordError" class="form-text text-danger d-none">A senha deve ter pelo
-                                    menos 6 caracteres.</small>
+
+                            <div class="mb-2">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                <small id="emailError" class="text-danger d-none">Insira um email válido.</small>
                             </div>
-                            <button type="submit" class="custom-button">Cadastrar</button>
-                        </form>
-                        <div class="mt-3 text-center">
-                            <p>Já é um membro? <a id="loginLink" href="/consultas/views/codigo/login.html">Faça
-                                    login</a></p>
-                            <!-- Link para login permanece -->
+
+                            <div class="mb-2">
+                                <label for="whatsapp" class="form-label">Contato</label>
+                                <input type="text" class="form-control" id="contato" placeholder="Contato">
+                                <small id="whatsappError" class="text-danger d-none">Insira um número válido de
+                                    WhatsApp.</small>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label d-block">Gênero</label>
+                                <div class="btn-group w-100" role="group" aria-label="Seleção de Gênero">
+                                    <input type="radio" class="btn-check" name="genero" id="generoMasculino"
+                                        value="Masculino" required>
+                                    <label class="btn btn-outline-primary" for="generoMasculino">Masculino</label>
+
+                                    <input type="radio" class="btn-check" name="genero" id="generoFeminino"
+                                        value="Feminino" required>
+                                    <label class="btn btn-outline-primary" for="generoFeminino">Feminino</label>
+
+                                    <input type="radio" class="btn-check" name="genero" id="generoOutro" value="Outro"
+                                        required>
+                                    <label class="btn btn-outline-primary" for="generoOutro">Outro</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-">
+                                <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                                <input type="date" class="form-control" id="dataNascimento" required>
+                                <small id="dataNascimentoError" class="text-danger d-none">Insira uma data
+                                    válida.</small>
+                            </div>
+
+                        </div>
+
+                        <!-- Coluna 2 -->
+                        <div class="col-md-4">
+
+                            <!-- Campo de CEP com Autocomplete -->
+                            <div class="mb-3">
+                                <label class="form-label">CEP</label>
+                                <input type="text" class="form-control" id="cep" placeholder="Digite o CEP"
+                                    onblur="buscarEnderecoPorCEP()">
+                            </div>
+
+                            <!-- Exibição de erro -->
+                            <div id="erroMensagem" class="text-danger mb-3"></div>
+
+                            <!-- Exibição do endereço selecionado -->
+                            <div class="mb-3">
+                                <label class="form-label">Endereço:</label>
+                                <div id="enderecoSelecionado" class="border p-2">
+                                    <!-- O endereço selecionado será exibido aqui -->
+                                </div>
+                            </div>
+
+                            <!-- Campo de Doenças -->
+                            <div class="mb-2">
+                                <label for="doencas" class="form-label">Doenças Preexistentes</label>
+                                <textarea class="form-control" id="doencas" rows="3"
+                                    placeholder="Descreva suas doenças preexistentes, se houver."></textarea>
+                            </div>
+
+                            <!-- Campo de Alergias -->
+                            <div class="mb-2">
+                                <label for="alergias" class="form-label">Alergias</label>
+                                <textarea class="form-control" id="alergias" rows="3"
+                                    placeholder="Descreva suas alergias, se houver."></textarea>
+                            </div>
+
+                            <!-- Seleção de Tipos de Consultas -->
+                            <div class="mb-2">
+                                <label class="form-label d-block">Selecione os Tipos de Consultas que deseja</label>
+                                <div class="consultas-container">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaFisioterapia">
+                                        <label class="form-check-label" for="consultaFisioterapia">Fisioterapia</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaNutricional">
+                                        <label class="form-check-label" for="consultaNutricional">Nutricional</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaPsicologica">
+                                        <label class="form-check-label" for="consultaPsicologica">Psicológica</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaCardiologica">
+                                        <label class="form-check-label" for="consultaCardiologica">Cardiológica</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaGinecologica">
+                                        <label class="form-check-label" for="consultaGinecologica">Ginecológica</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="consultaOutros">
+                                        <label class="form-check-label" for="consultaOutros">Outros</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- Coluna 3 -->
+                        <div class="col-md-4 parte-preta">
+                            <div class="mb-3">
+                                <div id="imagemPreview" class="mt-0"
+                                    style="width: 100%; height: 200px; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center;">
+                                    <img id="fotoPreview" src="" alt="Pré-visualização da foto"
+                                        style="max-width: 100%; max-height: 100%; display: none;">
+                                    <span id="fotoTexto" style="color: #888;">Nenhuma imagem selecionada</span>
+                                </div>
+
+                                <label for="foto" class="form-label">Foto</label>
+                                <input type="file" class="form-control" id="foto" accept="image/*"
+                                    onchange="exibirImagem(event)">
+                                <small id="fotoError" class="text-danger d-none">Selecione uma imagem válida.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="senha" class="form-label">Senha</label>
+                                <input type="password" class="form-control" id="senha" placeholder="Senha" required
+                                    minlength="6">
+                                <small id="senhaError" class="text-danger d-none">A senha deve ter pelo menos 6
+                                    caracteres.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmarSenha" class="form-label">Confirme a Senha</label>
+                                <input type="password" class="form-control" id="confirmarSenha"
+                                    placeholder="Confirme a senha" required minlength="6">
+                                <small id="confirmarSenhaError" class="text-danger d-none">As senhas não
+                                    coincidem.</small>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="custom-button">Confirmar</button>
+                            </div>
+                            <div class="mt-3 text-center">
+                                <p>Já é um membro? <a id="loginLink" href="/consultas/views/codigo/login.html">Faça
+                                        login</a></p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </main>
 
-    <script src="/consultas/public/javascript/jsPaginaCadastro/cadastro.js"></script>
+    <script src="/consultas/public/javascript/jsCadastroPessoal/preloader.js"></script>
+    <script src="/consultas/public/javascript/jsCadastroPessoal/mostrarimagem.js"></script>
+    <script src="/consultas/public/javascript/jsCadastroPessoal/buscarcep.js"></script>
+    <script src="/consultas/public/javascript/jsCadastroPessoal/cadastro.js"></script>
 </body>
 
 </html>

@@ -15,12 +15,18 @@
     <link rel="stylesheet" href="/consultas/public/styles/paginaInicial/header.css">
     <link rel="stylesheet" href="/consultas/public/styles/paginaInicial/banner.css">
     <link rel="stylesheet" href="/consultas/public/styles/paginaInicial/dropdown.css">
-    <link rel="stylesheet" href="/consultas/public/styles/paginaInicial/backtotop.css"> <!-- Adicionado link para o novo CSS -->
+    <link rel="stylesheet" href="/consultas/public/styles/paginaInicial/backtotop.css">
+    <!-- Adicionado link para o novo CSS -->
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
 
     <div id="wrapper">
+        <!-- Conteúdo da página -->
         <header id="banner" class="p-4">
             <div class="container d-flex justify-content-between align-items-center">
                 <div id="logo" class="logo">
@@ -50,8 +56,10 @@
         <div id="banner-content" class="text-left p-5">
             <div class="container">
                 <h1>"ENCONTRE O MELHOR"</h1>
-                <h2>Rose conecta usuários a profissionais de saúde autônomos, facilitando o agendamento de cuidados domiciliares de forma simples e rápida.</h2>
-                <a href="/consultas/views/codigo/buscarprofissionais.html" class="btn btn-primary">Comece a procurar!</a>
+                <h2>Rose conecta usuários a profissionais de saúde autônomos, facilitando o agendamento de cuidados
+                    domiciliares de forma simples e rápida.</h2>
+                <a href="/consultas/views/codigo/buscarprofissionais.html" class="btn btn-primary">Comece a
+                    procurar!</a>
             </div>
         </div>
 
@@ -120,22 +128,22 @@
             </section>
         </main>
 
-        
+
         <button class="back-to-top" aria-label="Voltar ao topo">
             &#8593; <!-- Ícone de seta para cima usando um código HTML -->
-        </button
+        </button </div>
 
-    </div>
+        <!-- Scripts do Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Scripts do Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Scripts do DropDown -->
-    <script src="/consultas/public/javascript/jsPaginaInicial/dropdown.js"></script>
-    <!-- Script do backToTop -->
-    <script src="/consultas/public/javascript/jsPaginaInicial/backtotop.js"></script> 
+        <!-- Scripts do DropDown -->
+        <script src="/consultas/public/javascript/jsPaginaInicial/dropdown.js"></script>
+        <!-- Script do backToTop -->
+        <script src="/consultas/public/javascript/jsPaginaInicial/backtotop.js"></script>
+        <!--Preloader -->
+        <script src="/consultas/public/javascript/jsPaginaInicial/preloader.js"></script>
 </body>
 
 </html>
