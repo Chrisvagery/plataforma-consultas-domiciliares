@@ -35,3 +35,16 @@
 .dropdown-item:hover {
     background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
 }
+/* Foto Perfil */
+
+#profileImage {
+    margin: 10px auto;
+    display: block;
+    border: 2px solid #ddd;
+}
+
+#userName {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+}
