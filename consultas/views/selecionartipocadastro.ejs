@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose - Selecione o tipo de Cadastro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Fonte Jost -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet">
+    <!-- Link com CSS -->
+    <link rel="stylesheet" href="/styles/paginaSelecionarTipoCadastro/tipodecadastro.css">
+  </head>
+
+  <body>
+    <!-- header: onde vai ter o botao para voltar -->
+    <header class="p-4">
+      <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
+    </header>
+    <!-- main: onde vai ter a parte de selecionar o tipo de cadastro-->
+    <main>
+      <!-- Linha que vai conter os dois cards -->
+      <div class="linha">
+        <!-- Card de cadastro profissional -->
+        <a href="/consultas/views/codigo/cadastroProfissional.html">
+          <div class="cartao1">
+            <h5 class="card-title">Crie um perfil Profissional</h5>
+            <p class="card-text">Texto explicativo sobre o cadastro profissional.</p>
+            <img src="/imagens/Ativo 3.png" class="fundo-img" alt="Imagem do Cadastro Profissional">
+          </div>
+        </a>
+
+        <!-- Card de cadastro cliente -->
+
+        <a href="/register">
+          <div class="cartao2">
+            <h5 class="card-title">Crie um perfil Pessoal</h5>
+            <p class="card-text">Texto explicativo sobre o cadastro cliente.</p>
+            <img src="/imagens/1x/Ativo 4.png" class="fundo-img" alt="Imagem do Cadastro Cliente">
+          </div>
+        </a>
+      </div>
+    </main>
+
+
+
+    </main>
+
+  </body>
+
+</html>

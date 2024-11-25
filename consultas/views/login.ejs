@@ -16,6 +16,20 @@
 
     <!-- Link com CSS -->
     <link rel="stylesheet" href="/styles/PaginaLogin/login.css">
+    <style>
+      .password-container {
+        position: relative;
+      }
+    
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+      }
+    </style>
   </head>
 
   <body>
@@ -42,6 +56,7 @@
                   <label for="password">Sua Senha</label>
                   <input type="password" class="form-control" id="senha" placeholder="Insira sua senha aqui" required
                     minlength="6">
+                  <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
                   <small id="passwordError" class="form-text text-danger d-none">A senha deve ter pelo
                     menos 6 caracteres.</small>
                 </div>
@@ -59,6 +74,20 @@
         </div>
       </div>
     </main>
+    <script>
+      const togglePassword = document.getElementById('togglePassword');
+      const passwordInput = document.getElementById('senha');
+
+      togglePassword.addEventListener('click', () => {
+        // Alterna o tipo de entrada entre 'password' e 'text'
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Alterna o ícone entre 'eye' e 'eye-slash'
+        togglePassword.classList.toggle('bi-eye');
+        togglePassword.classList.toggle('bi-eye-slash');
+      });
+    </script>
     <script src="../login/login.js"></script>
     <script src="/javascript/login.js"></script>
   </body>

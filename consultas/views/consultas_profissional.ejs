@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultas e Horários - Profissional</title>
+    <link rel="stylesheet" href="/path/to/your/styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2em;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .section {
+        margin-bottom: 30px;
+      }
+
+      .section h2 {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background: #f4f4f4;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      input[type="datetime-local"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        margin-right: 10px;
+      }
+
+      p {
+        color: #555;
+      }
+
+      .empty-message {
+        color: #999;
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Gerenciamento de Consultas</h1>
+      <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
+    </header>
+    <main>
+      <h2>Olá, <%=  profissionalNome %>!</h2>
+
+      <div class="section">
+        <h2>Consultas Agendadas</h2>
+        <% if (consultas.length> 0) { %>
+          <ul>
+            <% consultas.forEach(consulta=> { %>
+              <li>
+                <div>
+                  <strong>Data e Horário:</strong>
+                  <%= consulta.data_horario_formatado %><br />
+                    <strong>Cliente:</strong>
+                    <%= consulta.cliente_nome %><br />
+                      <strong>Telefone:</strong>
+                      <%= consulta.cliente_telefone %><br />
+                        <strong>Email:</strong>
+                        <%= consulta.cliente_email %><br />
+                          <strong>Endereço:</strong>
+                          <%= consulta.endereco_cliente %>
+                </div>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p class="empty-message">Você não tem consultas agendadas no momento.</p>
+            <% } %>
+      </div>
+
+
+
+
+      <div class="section">
+        <h2>Horários Disponíveis</h2>
+        <% if (horariosDisponiveis.length> 0) { %>
+          <ul>
+            <% horariosDisponiveis.forEach(horario=> { %>
+              <li>
+                <div>
+                  <strong>Horário:</strong>
+                  <%= horario.data_horario_formatado %>
+                </div>
+                <!-- Formulário para deletar o horário -->
+                <form action="/profissional/deletar-horario" method="POST">
+                  <input type="hidden" name="horarioId" value="<%= horario.id %>" />
+                  <button type="submit" class="btn btn-danger">Deletar</button>
+                </form>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p class="empty-message">Não há horários disponíveis no momento.</p>
+            <% } %>
+      </div>
+
+
+      <div class="section">
+        <h2>Adicionar Novo Horário</h2>
+        <form action="/profissional/adicionar-horario" method="POST">
+          <label for="dataHorario">Data e Horário:</label>
+          <input type="datetime-local" name="dataHorario" required />
+          <button type="submit">Adicionar Horário</button>
+        </form>
+      </div>
+
+    </main>
+  </body>
+
+</html>

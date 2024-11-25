@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, "../public")));
 const paypal = require("paypal-rest-sdk");
+const moment = require("moment-timezone");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,9 +37,11 @@ app.use("/agendamentos", agendamentosRouter);
 
 app.get('/' , (req, res)=>{
   const user = req.session.user;
-  res.render('home', { user});
+  res.render("home", { user });
 });
-
+app.get("/", (req, res) => {
+  res.render("selecionartipocadastro");
+});
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

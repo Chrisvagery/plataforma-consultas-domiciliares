@@ -1,144 +1,243 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
   <head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rose - Agendamentos e consultas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/PaginaInicial/font-awesome.min.css">
-
-    <!-- Link com CSS -->
-    <link rel="stylesheet" href="/styles/paginaInicial/header.css">
-    <link rel="stylesheet" href="/styles/paginaInicial/banner.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/paginaInicial/estilo2.css" />
+    <link rel="stylesheet" href="/imagens/PaginaInicial/icon/style.css" />
     <link rel="stylesheet" href="/styles/paginaInicial/dropdown.css">
-    <link rel="stylesheet" href="/styles/paginaInicial/backtotop.css">
-    <!-- Adicionado link para o novo CSS -->
+    <link rel="stylesheet" href="/styles/cadastro_profissional.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
   </head>
 
   <body>
+    <header id="header">
+      <nav class="container d-flex justify-content-between align-items-center">
+        <!-- Logo -->
+        <p class="logo m-0" href="#home"><span class="logo-color"> Rose</span></p>
 
-    <div id="wrapper">
-      <header id="banner" class="p-4">
-        <div class="container d-flex justify-content-between align-items-center">
-          <div id="logo" class="logo">
-            <h1 class="m-0">ROSE</h1>
-          </div>
+        <!-- Menu -->
+        <div class="menu">
+          <ul class="d-flex list-unstyled m-0">
+            <li><a class="title mx-3" href="#home">Início</a></li>
+            <li><a class="title mx-3" href="/home">Home</a></li>
+            <li class="dropdown" id="registerDropdown">
+              <a class="title mx-3" href="#">
+                Cadastro
+              </a>
+              <ul class="dropdown-menu" id="registerMenu">
+                <li><a class="dropdown-item" href="/register">Cadastrar Cliente</a></li>
+                <li><a class="dropdown-item" href="/register-profissional">Cadastrar Profissional</a></li>
+              </ul>
+            </li>
+            
 
-          <nav id="nav-main" class="nav">
-            <ul class="nav">
-              <li class="nav-item"><a class="nav-link text-dark" href="#banner">Início</a></li>
-              <li class="nav-item"><a class="nav-link text-dark" href="#pricing">Planos</a></li>
-              <li class="nav-item"><a class="nav-link text-dark" href="/home">Home</a></li>
+            <li><a class="title mx-3" href="#about">Sobre</a></li>
+            <li><a class="title mx-3" href="#services">Serviços</a></li>
+            <li><a class="title mx-3" href="#contact">Contato</a></li>
+            
+          </ul>
+        </div>
 
-            </ul>
-
-          </nav>
-
-          <div class="dropdown">
-            <button class="btn dropdown-toggle" id="dropdownMenuButton" onclick="toggleDropdown()">
-              <i class="fas fa-user"></i> Perfil
-            </button>
-            <div class="dropdown-menu" id="dropdownMenu">
-              <img src="sua_foto.jpg" alt="Foto do perfil" class="dropdown-item">
-              <a class="dropdown-item" href="/login">Login</a>
-            </div>
-          </div>
+        <!-- Botão de Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- Ícone ou Foto do Usuário -->
+            <img src="" alt="Foto do perfil" id="profileImage" class="rounded-circle"
+              style="width: 40px; height: 40px; object-fit: cover; display:none;">
+            <i class="fas fa-user" id="profileIcon"></i> <!-- Ícone padrão de usuário (fallback) -->
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- Foto do Perfil -->
+           
+            <li class="dropdown-item text-center">
+              <strong id="userName">Nome do Usuário</strong>
+              
+            </li>
+            <hr>
+            <!-- Consultas Marcadas -->
+            <li>
+              <div class="dropdown-item">
+        
+                <ul id="consultasList" class="mt-2">
+                  <li><a class="dropdown-item text-center btn btn-primary mt-2"  href="/perfil">Consultas marcadadas</a></li>
+                  <li><a class="dropdown-item text-center btn btn-primary mt-2" href="/profissional/consultas">Gerenciamento de consultas</a></li>
+                </ul>
+              </div>
+            </li>
+            <hr>
+            <!-- Botão de Login -->
+            <li>
+              <a class="dropdown-item text-center btn btn-primary mt-2" href="/login">
+                Login
+              </a>
+            </li>
+          </ul>
 
         </div>
-      </header>
 
-      <div id="banner-content" class="text-left p-5">
-        <div class="container">
-          <h1>"ENCONTRE O MELHOR"</h1>
-          <h2>Rose conecta usuários a profissionais de saúde autônomos, facilitando o agendamento de cuidados
-            domiciliares de forma simples e rápida.</h2>
-          <a href="/consultas/views/codigo/buscarprofissionais.html" class="btn btn-primary">Comece a procurar!</a>
+      </nav>
+
+    </header>
+    <main>
+      <section class="section d-flex justify-content-center align-items-center " id="home">
+        <div class="container grid">
+          <div class="image">
+            <img src="/imagens/PaginaInicial/fisioterapeuta.jpg" alt="Imagem de um jogo" />
+          </div>
+          <div class="text">
+            <h1 class="title">"Aqui, nós ajudamos você a escolher melhores profissionais.</h1>
+            <p>Rose conecta usuários a profissionais de saúde autônomos, facilitando o agendamento de cuidados
+              domiciliares de forma simples e rápida.</p>
+            <a class="button" href="/home">Comece a procurar!</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider-1"></div>
+
+      <section class="section" id="about">
+        <div class="container grid">
+          <div class="image">
+            <img src="/imagens/PaginaInicial/profissional.jpg" alt="Imagem dobre nós" />
+          </div>
+          <div class="text">
+            <h2 class="title">Quem Somos</h2>
+            <p>
+              Somos uma plataforma dedicada a conectar profissionais da saúde com aqueles que buscam cuidados personalizados e de
+              qualidade. Nosso objetivo é transformar vidas, promovendo saúde, bem-estar e um atendimento humanizado no conforto de
+              sua casa.
+            </p>
+            <br />
+            <p>
+            Acreditamos que o acesso à saúde deve ser simples e eficiente.
+             Por isso, reunimos uma equipe de profissionais
+            qualificados, comprometidos em oferecer atendimento de excelência,
+             respeitando as necessidades e particularidades de
+            cada cliente.
+            </p>
+            <br />
+            <p>
+              Com paixão pela saúde e bem-estar, criamos um espaço 
+              onde tecnologia e cuidado humano caminham juntos. Nossa plataforma
+              é um elo entre profissionais dedicados e clientes que valorizam
+               um atendimento personalizado e eficaz.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider-2"></div>
+
+      <section class="section" id="services">
+        <div class="container grid">
+          <header>
+            <h2 class="title">Serviços</h2>
+            <p class="subtitle">
+              Nossa plataforma conecta profissionais de saúde especializados com pacientes, oferecendo soluções inovadoras para
+              consultas domiciliares e gestão de informações de forma prática e segura.
+              </p>
+            </p>
+          </header>
+          <div class="cards grid">
+            <div class="card">
+              <i class="fas fa-calendar-check"></i>
+              <h3 class="title">Agendamento de Consultas</h3>
+              <p>
+                Permita que os pacientes marquem consultas diretamente com profissionais, 
+                escolhendo horários disponíveis com
+                facilidade e praticidade.
+              </p>
+            </div>
+            <div class="card">
+              <i class="fas fa-user-md"></i> <!-- Ícone para saúde -->
+              <h3 class="title">Gestão de Profissionais</h3>
+              <p>
+                Cadastre e gerencie informações detalhadas sobre profissionais de saúde,
+                 incluindo especializações, experiência e
+                disponibilidade.
+              </p>
+            </div>
+            <div class="card">
+              <i class="fas fa-credit-card"></i> <!-- Ícone para pagamentos -->
+              <h3 class="title">Pagamentos Integrados</h3>
+              <p>
+                Ofereça uma experiência completa com pagamentos integrados, 
+                facilitando o processo para pacientes e profissionais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider-1"></div>
+
+      <section class="section" id="contact">
+        <div class="container grid">
+          <div class="text">
+            <h2 class="title">Entre em contato com a gente</h2>
+            <p>
+              Estamos aqui para ajudar! Precisa tirar dúvidas, 
+              agendar um atendimento ou receber mais informações? Envie-nos uma
+              mensagem e nossa equipe retornará o mais breve possível.
+               Sua saúde e bem-estar são a nossa prioridade!
+            </p>
+            <!-- <a href="#" class="button"><i class="icon-whatsapp"></i>Entre em contato</a> -->
+            <a href="https://wa.me/5511912345678" class="button" target="_blank" rel="noopener">
+              <i class="icon-whatsapp"></i>Entre em contato
+            </a>
+
+          </div>
+          <div class="links">
+            <ul class="grid">
+              <li><i class="icon-phone"></i>(49)99980-2165</li>
+              <li><i class="icon-mail"></i>plataformaconsultasdomiciliare@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider-2"></div>
+    </main>
+    <footer class="section">
+      <div class="container grid">
+        <div class="brand">
+          <a class="logo logo-alt" href="#home">plataforma<span class="logo-color">Consultas.</span></a>
+          <p>2024 plataforma consultas.</p>
+          <p>Todos os direitos reservados</p>
+        </div>
+        <div class="social">
+          <a href="https://www.instagram.com" target="_blank"><i class="icon-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank"><i class="icon-facebook"></i></a>
+          <a href="https://www.youtube.com" target="_blank"><i class="icon-youtube"></i></a>
         </div>
       </div>
-
-      <main id="content" class="container my-5">
-        <section id="pricing" class="text-center">
-          <div class="section-heading mb-4">
-            <h3>SUA ESCOLHA</h3>
-            <h2>Nós temos o plano certo para você!</h2>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <h3 class="card-title">Gratuito</h3>
-                  <p class="card-text">Para usuários comuns</p>
-                  <div class="price"><span>R$</span>19</div>
-                  <ul class="list-unstyled">
-                    <li>5 Downloads</li>
-                    <li>2 Extensions</li>
-                    <li>Tutoriais</li>
-                    <li>Suporte no Fórum</li>
-                    <li>1 ano de atualizações gratuitas</li>
-                  </ul>
-                  <a href="#" class="btn btn-primary">COMPRE AGORA!</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="card mb-4 border-primary">
-                <div class="card-body">
-                  <h3 class="card-title">Básico</h3>
-                  <p class="card-text">A escolha mais popular</p>
-                  <div class="price"><span>R$</span>29</div>
-                  <ul class="list-unstyled">
-                    <li>15 Downloads</li>
-                    <li>5 Extensions</li>
-                    <li>Tutoriais com Arquivos</li>
-                    <li>Suporte no Fórum</li>
-                    <li>2 anos de atualizações gratuitas</li>
-                  </ul>
-                  <a href="#" class="btn btn-primary">COMPRE AGORA!</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <h3 class="card-title">Ilimitado</h3>
-                  <p class="card-text">Com tudo o que você precisa</p>
-                  <div class="price"><span>R$</span>49</div>
-                  <ul class="list-unstyled">
-                    <li>Downloads Ilimitados</li>
-                    <li>Extensões Ilimitadas</li>
-                    <li>Tutoriais em Vídeo HD</li>
-                    <li>Suporte via Chat</li>
-                    <li>Atualizações gratuitas para toda a vida</li>
-                  </ul>
-                  <a href="#" class="btn btn-primary">COMPRE AGORA!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-
-      <button class="back-to-top" aria-label="Voltar ao topo">
-        &#8593; <!-- Ícone de seta para cima usando um código HTML -->
-      </button </div>
-
-      <!-- Scripts do Bootstrap -->
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-      <!-- Scripts do DropDown -->
-      <script src="/consultas/public/javascript/jsPaginaInicial/dropdown.js"></script>
-      <!-- Script do backToTop -->
-      <script src="/consultas/public/javascript/jsPaginaInicial/backtotop.js"></script>
+    </footer>
+    <a href="#home" class="back-to-top"><i class="icon-arrow-up-circle"></i></a>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="/consultas/public/javascript/jsPaginaInicial/script2.js"></script>
+    <script src="/javascript/cadastro_profissional.js"></script>
+    <!-- Scripts do DropDown -->
+    <script src="/consultas/public/javascript/jsPaginaInicial/dopdown.js"></script>
+    <!-- Scripts da Foto de Perfil -->
+    <script src="/consultas/public/javascript/jsPaginaInicial/fotoperfil.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 
 </html>

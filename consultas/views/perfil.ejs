@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do Cliente</title>
-    <link rel="stylesheet" href="/path/to/your/styles.css"> <!-- Adicione o caminho do seu CSS -->
+    <link rel="stylesheet" href="/path/to/your/styles.css"> 
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -65,13 +65,10 @@
   </head>
 
   <body>
-    <header>
-      <h1>Plataforma Consultas Domiciliares</h1>
-    </header>
-
+   
     <main>
-      <h2>Perfil do Cliente</h2>
-
+      <h2>Olá, <%= clienteNome %>!</h2>
+    
       <h3>Consultas Agendadas</h3>
       <ul>
         <% if (consultasAgendadas.length> 0) { %>
@@ -79,11 +76,10 @@
             <li>
               <strong>Data e Horário:</strong>
               <span class="horario-text">
-                <%= new Date(consulta.data_horario).toLocaleString('pt-BR', { year: 'numeric' , month: '2-digit' ,
-                  day: '2-digit' , hour: '2-digit' , minute: '2-digit' , hour12: false }) %>
+                <%= consulta.data_horario_formatado %> <!-- Exibe o horário formatado -->
               </span>
               | <strong>Profissional:</strong>
-              <%= consulta.profissional_id %>
+              <%= consulta.profissional_nome %>
                 | <strong>Valor:</strong> R$ <%= consulta.valor ? Number(consulta.valor).toFixed(2) : 'N/A' %>
                   <form action="/cancelar-consulta" method="POST" style="display:inline;">
                     <input type="hidden" name="consultaId" value="<%= consulta.id %>">
@@ -97,9 +93,8 @@
       </ul>
     </main>
 
-    <footer>
-      <p>&copy; 2024 Plataforma Consultas Domiciliares. Todos os direitos reservados.</p>
-    </footer>
+
+   
   </body>
 
 </html>

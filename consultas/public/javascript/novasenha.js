@@ -3,8 +3,8 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const token = document.getElementById("token").value;
+    //const email = document.getElementById("email").value;
+    //const token = document.getElementById("token").value;
     const newPassword = document.getElementById("newPassword").value;
 
     try {
@@ -13,7 +13,7 @@ document
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, token, password: newPassword }), // Enviando os três campos
+        body: JSON.stringify({ password: newPassword }), // Enviando os três campos
       });
 
       if (response.ok) {

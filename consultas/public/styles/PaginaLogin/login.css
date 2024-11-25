@@ -82,3 +82,23 @@ header {
     transition-duration: 0.4s; /* Efeito de transição */
 
 }
+.token-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    /* Espaço entre os campos */
+}
+
+/* Estilo para os campos de entrada do token */
+.token-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    /* Formato circular */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    /* Remove o contorno ao focar */
+}

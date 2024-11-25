@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const { sendEmail } = require("./../mailer");
 const crypto = require("crypto");
+const moment = require("moment-timezone");
 
 router.get("/", (req, res) => {
   res.render("index");
@@ -48,11 +49,29 @@ function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
   }
-
-  // if (req.session) {
-  //   req.session.error = "Você precisa estar logado para acessar esta página.";
-  // }
   res.redirect("/login");
+
+}
+
+function isClient(req, res, next) {
+  if (!req.session.isClient) {
+     return res.redirect("/login");
+  }
+  next();
+ // res.redirect("/login");
+}
+
+function isProfessional(req, res, next) {
+  if (!req.session.isProfessional) {
+     return res.redirect("/login");
+    
+  }
+  next();
+ // res.redirect("/login");
+}
+
+function formatDateForInterface(date) {
+  return moment(date).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss");
 }
 
 router.post("/register", async (req, res) => {
@@ -265,7 +284,11 @@ router.post("/login", async (req, res) => {
     req.session.isProfessional = user.isProfessional;
 
     // Retorna uma resposta de sucesso
-    res.json({ message: "Login realizado com sucesso!", user });
+    //res.json({ message: "Login realizado com sucesso!", user });
+    res.json({
+      message: "Login realizado com sucesso!",
+      isProfessional: user.isProfessional,
+    });
     // res.redirect("/home");
   } catch (error) {
     console.error("Erro ao fazer login:", error);
@@ -316,6 +339,9 @@ router.post("/forgot-password", async (req, res) => {
       [token, resetPasswordExpires, email] // Passa o valor em bigint
     );
 
+    req.session.email = email;
+    req.session.resetToken = token;
+
     await sendEmail(
       email,
       "Redefinição de Senha",
@@ -328,7 +354,7 @@ router.post("/forgot-password", async (req, res) => {
        <p>Recebemos uma solicitação para um código de recuperação de senha da sua conta.<br>Use o código abaixo para redefinir sua senha e continuar aproveitando os benefícios do <strong>Baú da Saúde</strong>:</p>
        <p style="font-size: 18px; font-weight: bold;">${token}</p>
        <p>Caso não tenha solicitado esse código, pode ignorar a presente mensagem com segurança. Outra pessoa pode ter digitado seu e-mail por engano.<br>Se precisar de qualquer ajuda, nossa equipe está à disposição.</p>
-       <p>Atenciosamente,<br>Equipe Baú da Saúde</p>`
+       <p>Atenciosamente,<br>Equipe Plataforma consultas domiciliares </p>`
     );
 
     res.json({ message: "Código de redefinição de senha enviado." });
@@ -368,6 +394,8 @@ router.post("/verify-token", async (req, res) => {
     } else {
       return res.status(400).json({ message: "Token inválido ou expirado." });
     }
+    req.session.email = user.email;
+    req.session.isProfessional = !!professionalResult.rows.length;
 
     // Se o token for válido, o usuário pode redefinir a senha
     return res
@@ -382,51 +410,36 @@ router.post("/verify-token", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-  const { token, email, password } = req.body;
+  const { password } = req.body;
 
   try {
-    // Verifica se o usuário existe e se o token de redefinição não expirou
-    const clientResult = await pool.query(
-      `SELECT * FROM clientes WHERE email = $1 AND reset_password_expires > $2`,
-      [email, Date.now()]
-    );
+    const email = req.session.email;
+    const isProfessional = req.session.isProfessional;
 
-    const professionalResult = await pool.query(
-      `SELECT * FROM profissionais WHERE email = $1 AND reset_password_expires > $2`,
-      [email, Date.now()]
-    );
-
-    let user;
-
-    // Verifica se o usuário foi encontrado em clientes ou profissionais
-    if (clientResult.rows.length > 0) {
-      user = clientResult.rows[0];
-      user.isProfessional = false; // Adiciona uma propriedade para identificar o tipo de usuário
-    } else if (professionalResult.rows.length > 0) {
-      user = professionalResult.rows[0];
-      user.isProfessional = true; // Adiciona uma propriedade para identificar o tipo de usuário
-    } else {
-      console.log("Usuário não encontrado ou token expirado.");
-      return res.status(400).send("Token inválido ou expirado.");
+    if (!email) {
+      return res.status(400).send("Email não encontrado na sessão.");
     }
 
-    // Atualiza a senha do usuário com a nova senha criptografada
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Atualiza a senha no banco de dados de acordo com o tipo de usuário
     await pool.query(
-      `UPDATE ${user.isProfessional ? "profissionais" : "clientes"} 
+      `UPDATE ${isProfessional ? "profissionais" : "clientes"} 
        SET senha = $1, reset_password_token = NULL, reset_password_expires = NULL 
        WHERE email = $2`,
-      [hashedPassword, email] // Passa o hash da senha e o email
+      [hashedPassword, email]
     );
+
+    // Limpa os dados da sessão
+    req.session.email = null;
+    req.session.isProfessional = null;
 
     res.status(200).send("Senha redefinida com sucesso!");
   } catch (error) {
-    console.log("Erro no servidor:", error.message);
-    res.status(500).send("Erro no servidor. Tente novamente mais tarde.");
+    console.error("Erro ao redefinir senha:", error);
+    res.status(500).send("Erro no servidor.");
   }
 });
+
 
 router.post("/pagamento", (req, res) => {
   console.log("Recibido webhook:", req.body);
@@ -442,7 +455,7 @@ router.post("/pagamento", (req, res) => {
 
 // // Rota para listar profissionais
 // //
-router.get("/home", isAuthenticated, async (req, res) => {
+router.get("/home",  async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM profissionais"); // Busca todos os profissionais
     const profissionais = result.rows; // Obtém os dados
@@ -453,9 +466,8 @@ router.get("/home", isAuthenticated, async (req, res) => {
   }
 });
 
-// Rota para mostrar detalhes do profissional e horários disponíveis
-router.get("/detalhes-profissional/:id", async (req, res) => {
-  const profissionalId = req.params.id; // Obtém o ID do profissional da URL
+router.get("/detalhes-profissional/:id", isAuthenticated, async (req, res) => {
+  const profissionalId = req.params.id;
 
   try {
     // Busca os detalhes do profissional
@@ -465,14 +477,25 @@ router.get("/detalhes-profissional/:id", async (req, res) => {
     );
     const profissional = profissionalResult.rows[0];
 
-    // Busca os horários disponíveis para esse profissional
+    if (!profissional) {
+      return res.status(404).send("Profissional não encontrado.");
+    }
+
+    // Busca os horários disponíveis no banco
     const horariosResult = await pool.query(
-      "SELECT data_horario FROM horarios_disponiveis WHERE profissional_id = $1 AND disponivel = true",
+      "SELECT * FROM horarios_disponiveis WHERE profissional_id = $1 AND disponivel = true",
       [profissionalId]
     );
-    const horariosDisponiveis = horariosResult.rows; // Obtém os horários disponíveis
 
-    // Renderiza a página de detalhes do profissional com os horários disponíveis
+    // Converte os horários para o formato esperado pela interface
+    const horariosDisponiveis = horariosResult.rows.map((horario) => ({
+      ...horario,
+      data_horario_formatado: moment(horario.data_horario).format(
+        "YYYY-MM-DD HH:mm:ss"
+      ), // Formato padrão
+    }));
+
+    // Renderiza a página com os dados formatados
     res.render("detalhes-profissional", {
       profissional,
       horariosDisponiveis,
@@ -492,93 +515,160 @@ router.post("/agendar-consulta", isAuthenticated, async (req, res) => {
   }
 
   try {
-    // Formata a data para o padrão ISO sem fuso horário
-    const dataHorarioFormatado = new Date(dataHorarioSelecionado)
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
+    // Formata o horário no formato aceito pelo PostgreSQL
+    const dataHorarioFormatado = moment(
+      dataHorarioSelecionado,
+      "YYYY-MM-DD HH:mm:ss"
+    ).format("YYYY-MM-DD HH:mm:ss");
 
-    // Log para verificar o formato da data
-    console.log(
-      "Data e hora formatada para agendamento:",
-      dataHorarioFormatado
+    console.log("Data e Hora Selecionada:", dataHorarioFormatado);
+
+    // Verifica se o horário existe e está disponível
+    const horarioDisponivel = await pool.query(
+      "SELECT * FROM horarios_disponiveis WHERE profissional_id = $1 AND data_horario = $2 AND disponivel = true",
+      [profissionalId, dataHorarioFormatado]
     );
 
-    // Insere a nova consulta com a data/hora formatada
+    if (horarioDisponivel.rows.length === 0) {
+      return res.status(400).send("Horário já foi escolhido ou não existe.");
+    }
+
+    // Insere a consulta diretamente
     const insertConsulta = await pool.query(
       "INSERT INTO consultas (profissional_id, cliente_id, data_horario, valor) VALUES ($1, $2, $3, $4) RETURNING id",
       [profissionalId, clienteId, dataHorarioFormatado, precoConsulta]
     );
 
-    // Atualiza a disponibilidade do horário para `false`
+    console.log("Consulta Inserida com ID:", insertConsulta.rows[0].id);
+
+    // Atualiza o horário para indisponível
     await pool.query(
-      "UPDATE horarios_disponiveis SET disponivel = false WHERE profissional_id = $1 AND data_horario = $2 RETURNING *",
+      "UPDATE horarios_disponiveis SET disponivel = false WHERE profissional_id = $1 AND data_horario = $2",
       [profissionalId, dataHorarioFormatado]
     );
 
     // Obtenha os dados do cliente e do profissional
     const clienteResult = await pool.query(
-      "SELECT nome, email, telefone FROM clientes WHERE id = $1",
+      `SELECT nome, email, telefone, rua, numero, bairro, cidade, estado, cep 
+       FROM clientes WHERE id = $1`,
       [clienteId]
     );
     const profissionalResult = await pool.query(
       "SELECT nome, email FROM profissionais WHERE id = $1",
       [profissionalId]
     );
+
     const cliente = clienteResult.rows[0];
     const profissional = profissionalResult.rows[0];
 
+    // Formata o endereço do cliente
+    const enderecoCliente = `${cliente.rua}, ${cliente.numero} - ${cliente.bairro}, ${cliente.cidade} - ${cliente.estado}, CEP: ${cliente.cep}`;
+
     // Envia o e-mail ao profissional com os detalhes da consulta
-    const subject = "Nova Consulta Agendada";
-    const text = `Olá ${profissional.nome}, uma nova consulta foi agendada.\n\n
-                  Cliente: ${cliente.nome}\n
-                  E-mail: ${cliente.email}\n
-                  Telefone: ${cliente.telefone}\n
-                  Data e Hora: ${new Date(dataHorarioFormatado).toLocaleString(
-                    "pt-BR"
-                  )}\n\n
-                  Atenciosamente,\nEquipe`;
-
-    const html = `<p>Olá <strong>${
+    const subjectToProfessional = "Nova Consulta Agendada";
+    const textToProfessional = `Olá ${
       profissional.nome
-    }</strong>, uma nova consulta foi agendada.</p>
-                  <p><strong>Cliente:</strong> ${cliente.nome}</p>
-                  <p><strong>E-mail:</strong> ${cliente.email}</p>
-                  <p><strong>Telefone:</strong> ${cliente.telefone}</p>
-                  <p><strong>Data e Hora:</strong> ${new Date(
-                    dataHorarioFormatado
-                  ).toLocaleString("pt-BR")}</p>
-                  <p>Atenciosamente,<br>Equipe</p>`;
+    }, uma nova consulta foi agendada.\n\n
+                                Cliente: ${cliente.nome}\n
+                                Endereço: ${enderecoCliente}\n
+                                E-mail: ${cliente.email}\n
+                                Telefone: ${cliente.telefone}\n
+                                Data e Hora: ${new Date(
+                                  dataHorarioFormatado
+                                ).toLocaleString("pt-BR")}\n\n
+                                Atenciosamente,\nEquipe`;
 
-    await sendEmail(profissional.email, subject, text, html);
+    const htmlToProfessional = `<p>Olá <strong>${
+      profissional.nome
+    }</strong>,</p>
+                                <p>Uma nova consulta foi agendada.</p>
+                                <p><strong>Cliente:</strong> ${cliente.nome}</p>
+                                <p><strong>Endereço:</strong> ${enderecoCliente}</p>
+                                <p><strong>E-mail:</strong> ${cliente.email}</p>
+                                <p><strong>Telefone:</strong> ${
+                                  cliente.telefone
+                                }</p>
+                                <p><strong>Data e Hora:</strong> ${new Date(
+                                  dataHorarioFormatado
+                                ).toLocaleString("pt-BR")}</p>
+                                <p>Atenciosamente,<br>Equipe</p>`;
 
-    res.status(200).send("Consulta agendada com sucesso!");
+    await sendEmail(
+      profissional.email,
+      subjectToProfessional,
+      textToProfessional,
+      htmlToProfessional
+    );
+
+    // Envia o e-mail ao cliente com os detalhes da consulta
+    const subjectToClient = "Sua Consulta Foi Agendada!";
+    const textToClient = `Olá ${
+      cliente.nome
+    }, sua consulta foi agendada com sucesso!\n\n
+                          Profissional: ${profissional.nome}\n
+                          Data e Hora: ${new Date(
+                            dataHorarioFormatado
+                          ).toLocaleString("pt-BR")}\n\n
+                          Obrigado por usar nossa plataforma!\nAtenciosamente,\nEquipe`;
+
+    const htmlToClient = `<p>Olá <strong>${cliente.nome}</strong>,</p>
+                          <p>Sua consulta foi agendada com sucesso!</p>
+                          <p><strong>Profissional:</strong> ${
+                            profissional.nome
+                          }</p>
+                          <p><strong>Data e Hora:</strong> ${new Date(
+                            dataHorarioFormatado
+                          ).toLocaleString("pt-BR")}</p>
+                          <p>Obrigado por usar nossa plataforma!</p>
+                          <p>Atenciosamente,<br>Equipe</p>`;
+
+    await sendEmail(cliente.email, subjectToClient, textToClient, htmlToClient);
+
+    //res.status(200).send("Consulta agendada com sucesso!");
+   res.send(`
+  <script>
+    alert('Consulta agendada com sucesso!');
+    window.location.href = '/';
+  </script>
+`);
+
+
   } catch (error) {
     console.error("Erro ao agendar consulta:", error);
     res.status(500).send("Erro ao agendar consulta.");
   }
 });
 
+
 router.get("/perfil", isAuthenticated, async (req, res) => {
   const clienteId = req.session.userId;
 
   try {
-    // Busca todas as consultas agendadas do cliente
-    const agendadasResult = await pool.query(
-      "SELECT * FROM consultas WHERE cliente_id = $1 AND status = 'agendada'",
+    // Busca o nome do cliente
+    const clienteResult = await pool.query(
+      "SELECT nome FROM clientes WHERE id = $1",
       [clienteId]
     );
-    const consultasAgendadas = agendadasResult.rows;
+    const clienteNome = clienteResult.rows[0].nome;
 
-    // Busca todas as consultas canceladas do cliente
-    // const canceladasResult = await pool.query(
-    //   "SELECT * FROM consultas WHERE cliente_id = $1 AND status = 'cancelada'",
-    //   [clienteId]
-    // );
-    // const consultasCanceladas = canceladasResult.rows || []; // Defina como array vazio se não houver resultados
+    // Busca todas as consultas agendadas do cliente
+    const consultasResult = await pool.query(
+      `SELECT c.*, p.nome AS profissional_nome 
+       FROM consultas c
+       JOIN profissionais p ON c.profissional_id = p.id
+       WHERE c.cliente_id = $1 AND c.status = 'agendada'`,
+      [clienteId]
+    );
 
-    // Renderiza a página de perfil com as consultas agendadas e canceladas
-    res.render("perfil", { consultasAgendadas });
+    // Formata as datas das consultas para o mesmo formato
+    const consultasAgendadas = consultasResult.rows.map((consulta) => ({
+      ...consulta,
+      data_horario_formatado: moment(consulta.data_horario).format(
+        "YYYY-MM-DD HH:mm:ss"
+      ),
+    }));
+
+    res.render("perfil", { consultasAgendadas, clienteNome });
   } catch (error) {
     console.error("Erro ao buscar consultas do cliente:", error);
     res.status(500).send("Erro ao buscar consultas.");
@@ -590,78 +680,263 @@ router.post("/cancelar-consulta", isAuthenticated, async (req, res) => {
   const clienteId = req.session.userId;
 
   try {
-    // Verifica se a consulta pertence ao cliente logado e está agendada
     const consultaResult = await pool.query(
       "SELECT * FROM consultas WHERE id = $1 AND cliente_id = $2 AND status = 'agendada'",
       [consultaId, clienteId]
     );
 
-    // Verifica se a consulta foi encontrada
     if (consultaResult.rows.length === 0) {
       return res.status(400).send("Consulta não encontrada ou já cancelada.");
     }
 
     const consulta = consultaResult.rows[0];
 
-    // Inicia uma transação para garantir consistência
     await pool.query("BEGIN");
 
-    // Exclui a consulta da tabela consultas
     await pool.query("DELETE FROM consultas WHERE id = $1", [consultaId]);
 
-    // Retorna o horário na tabela horarios_disponiveis
     await pool.query(
-      "UPDATE horarios_disponiveis SET disponivel = true WHERE id = $1",
-      [consultaId]
+      "UPDATE horarios_disponiveis SET disponivel = true WHERE profissional_id = $1 AND data_horario = $2",
+      [consulta.profissional_id, consulta.data_horario]
     );
 
-    // Busca as informações do profissional
     const profissionalResult = await pool.query(
       "SELECT nome, email FROM profissionais WHERE id = $1",
       [consulta.profissional_id]
     );
 
-    // Busca as informações do cliente
+    if (profissionalResult.rows.length === 0) {
+      throw new Error("Profissional não encontrado.");
+    }
+
+    const profissional = profissionalResult.rows[0];
+
     const clienteResult = await pool.query(
-      "SELECT nome, email FROM clientes WHERE id = $1",
+      `SELECT nome, email, telefone, rua, numero, bairro, cidade, estado, cep
+       FROM clientes WHERE id = $1`,
       [clienteId]
     );
 
-    if (profissionalResult.rows.length > 0 && clienteResult.rows.length > 0) {
-      const profissional = profissionalResult.rows[0];
-      const cliente = clienteResult.rows[0];
-
-      // Conteúdo do email de notificação
-      const subject = "Notificação de Cancelamento de Consulta";
-      const text = `Olá ${profissional.nome},\n\n
-                    A consulta agendada para ${consulta.data_horario.toLocaleString(
-                      "pt-BR"
-                    )} foi cancelada pelo cliente ${cliente.nome}.\n
-                    E-mail do cliente: ${cliente.email}\n\n
-                    Atenciosamente,\nEquipe`;
-
-      const html = `<p>Olá <strong>${profissional.nome}</strong>,</p>
-                    <p>A consulta agendada para <strong>${consulta.data_horario.toLocaleString(
-                      "pt-BR"
-                    )}</strong> foi cancelada pelo cliente <strong>${
-        cliente.nome
-      }</strong>.</p>
-                    <p><strong>E-mail do cliente:</strong> ${cliente.email}</p>
-                    <p>Atenciosamente,<br>Equipe</p>`;
-
-      // Envia o email ao profissional
-      await sendEmail(profissional.email, subject, text, html);
+    if (clienteResult.rows.length === 0) {
+      throw new Error("Cliente não encontrado.");
     }
 
-    // Confirma a transação
-    await pool.query("COMMIT");
+    const cliente = clienteResult.rows[0];
 
-    res.redirect("/perfil"); // Redireciona de volta para o perfil do cliente
+    const enderecoCliente = `${cliente.rua}, ${cliente.numero} - ${cliente.bairro}, ${cliente.cidade} - ${cliente.estado}, CEP: ${cliente.cep}`;
+
+    // Envia e-mail ao profissional
+    const subjectToProfessional = "Notificação de Cancelamento de Consulta";
+    const textToProfessional = `Olá ${profissional.nome},\n\n
+                                A consulta agendada para ${consulta.data_horario.toLocaleString(
+                                  "pt-BR"
+                                )} foi cancelada pelo cliente ${cliente.nome}.\n
+                                Endereço do cliente: ${enderecoCliente}\n
+                                E-mail do cliente: ${cliente.email}\n\n
+                                Atenciosamente,\nEquipe`;
+
+    const htmlToProfessional = `<p>Olá <strong>${
+      profissional.nome
+    }</strong>,</p>
+                                <p>A consulta agendada para <strong>${consulta.data_horario.toLocaleString(
+                                  "pt-BR"
+                                )}</strong> foi cancelada pelo cliente <strong>${
+      cliente.nome
+    }</strong>.</p>
+                                <p><strong>Endereço do cliente:</strong> ${enderecoCliente}</p>
+                                <p><strong>E-mail do cliente:</strong> ${
+                                  cliente.email
+                                }</p>
+                                <p>Atenciosamente,<br>Equipe</p>`;
+
+    await sendEmail(
+      profissional.email,
+      subjectToProfessional,
+      textToProfessional,
+      htmlToProfessional
+    );
+
+    // Envia e-mail ao cliente
+    const subjectToClient = "Confirmação de Cancelamento de Consulta";
+    const textToClient = `Olá ${cliente.nome},\n\n
+                          A consulta agendada com o profissional ${
+                            profissional.nome
+                          } para ${consulta.data_horario.toLocaleString(
+      "pt-BR"
+    )} foi cancelada com sucesso.\n\n
+                          Obrigado por usar nossa plataforma!\nAtenciosamente,\nEquipe`;
+
+    const htmlToClient = `<p>Olá <strong>${cliente.nome}</strong>,</p>
+                          <p>A consulta agendada com o profissional <strong>${
+                            profissional.nome
+                          }</strong> para <strong>${consulta.data_horario.toLocaleString(
+      "pt-BR"
+    )}</strong> foi cancelada com sucesso.</p>
+                          <p>Caso tenha sido um engano, entre em contato conosco</p>
+                          <p>Atenciosamente,<br>Equipe</p>`;
+
+    await sendEmail(cliente.email, subjectToClient, textToClient, htmlToClient);
+
+    await pool.query("COMMIT");
+    res.redirect("/perfil");
   } catch (error) {
-    await pool.query("ROLLBACK"); // Reverte a transação em caso de erro
-    console.error("Erro ao cancelar consulta:", error);
+    await pool.query("ROLLBACK");
+    console.error("Erro ao cancelar consulta:", error.message);
     res.status(500).send("Erro ao cancelar consulta.");
   }
 });
+
+router.get( "/profissional/consultas",isAuthenticated, isProfessional, async (req, res) => {
+    const profissionalId = req.session.userId; // ID do profissional logado
+
+    try {
+      // Busca o nome do profissional
+      const profissionalResult = await pool.query(
+        "SELECT nome FROM profissionais WHERE id = $1",
+        [profissionalId]
+      );
+      const profissionalNome =
+        profissionalResult.rows[0]?.nome || "Profissional";
+
+      const consultasResult = await pool.query(
+        `SELECT c.*, 
+          cl.nome AS cliente_nome, 
+          cl.email AS cliente_email, 
+          cl.telefone AS cliente_telefone,
+          cl.rua AS cliente_rua, 
+          cl.numero AS cliente_numero, 
+          cl.bairro AS cliente_bairro, 
+          cl.cidade AS cliente_cidade, 
+          cl.estado AS cliente_estado
+           FROM consultas c
+          JOIN clientes cl ON c.cliente_id = cl.id
+           WHERE c.profissional_id = $1 AND c.status = 'agendada'
+          ORDER BY c.data_horario`,
+          [profissionalId]
+      );
+
+
+      // Formata as datas das consultas agendadas
+      const consultas = consultasResult.rows.map((consulta) => ({
+        ...consulta,
+        data_horario_formatado: moment(consulta.data_horario).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        endereco_cliente: `${consulta.cliente_rua}, ${consulta.cliente_numero} - ${consulta.cliente_bairro}, ${consulta.cliente_cidade} - ${consulta.cliente_estado}`,
+      }));
+
+      // Busca os horários disponíveis
+      const horariosResult = await pool.query(
+        "SELECT * FROM horarios_disponiveis WHERE profissional_id = $1 AND disponivel = true",
+        [profissionalId]
+      );
+
+      // Formata as datas dos horários disponíveis
+      const horariosDisponiveis = horariosResult.rows.map((horario) => ({
+        ...horario,
+        data_horario_formatado: moment(horario.data_horario).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+      }));
+
+      // Renderiza o template e passa as informações
+      res.render("consultas_profissional", {
+        profissionalNome,
+        consultas,
+        horariosDisponiveis,
+      });
+    } catch (error) {
+      console.error(
+        "Erro ao buscar consultas e horários do profissional:",
+        error
+      );
+      res.status(500).send("Erro ao buscar informações.");
+    }
+  }
+);
+
+// Rota para liberar um horário específico
+router.post("/profissional/liberar-horario", isAuthenticated, async (req, res) => {
+  const horarioId = req.body.horarioId;
+
+  try {
+    await pool.query(
+      "UPDATE horarios_disponiveis SET disponivel = true WHERE id = $1",
+      [horarioId]
+    );
+    res.redirect("/profissional/consultas");
+  } catch (error) {
+    console.error("Erro ao liberar horário:", error);
+    res.status(500).send("Erro ao liberar horário.");
+  }
+});
+
+router.post(
+  "/profissional/adicionar-horario",
+  isAuthenticated,
+  async (req, res) => {
+    const { dataHorario } = req.body;
+    const profissionalId = req.session.userId;
+
+    try {
+      // Formata o horário para o formato consistente
+      const dataHorarioFormatado = moment(
+        dataHorario,
+        "YYYY-MM-DDTHH:mm",
+        true
+      ); // Formato enviado pelo input `datetime-local`
+
+      // Valida o formato da data
+      if (!dataHorarioFormatado.isValid()) {
+        console.error("Erro: Horário inválido.");
+        return res.status(400).send("Formato de horário inválido.");
+      }
+
+      // Converte para o formato desejado
+      const dataHorarioFinal = dataHorarioFormatado.format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+
+      // Insere no banco
+      await pool.query(
+        "INSERT INTO horarios_disponiveis (profissional_id, data_horario, disponivel) VALUES ($1, $2, true)",
+        [profissionalId, dataHorarioFinal]
+      );
+
+      res.redirect("/profissional/consultas");
+    } catch (error) {
+      console.error("Erro ao adicionar horário:", error);
+      res.status(500).send("Erro ao adicionar horário.");
+    }
+  }
+);
+
+router.post(
+  "/profissional/deletar-horario",
+  isAuthenticated,
+  async (req, res) => {
+    const { horarioId } = req.body;
+
+    try {
+      // Deleta o horário pelo ID
+      const deleteResult = await pool.query(
+        "DELETE FROM horarios_disponiveis WHERE id = $1 RETURNING *",
+        [horarioId]
+      );
+
+      // Verifica se o horário foi deletado
+      if (deleteResult.rowCount === 0) {
+        console.error("Horário não encontrado para exclusão.");
+        return res.status(404).send("Horário não encontrado.");
+      }
+
+      console.log("Horário deletado:", deleteResult.rows[0]);
+      res.redirect("/profissional/consultas"); // Redireciona para a página de gerenciamento de horários
+    } catch (error) {
+      console.error("Erro ao deletar horário:", error);
+      res.status(500).send("Erro ao deletar horário.");
+    }
+  }
+);
 
 module.exports = router;

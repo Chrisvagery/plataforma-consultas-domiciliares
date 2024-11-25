@@ -14,12 +14,45 @@ html, body {
     height: 100vh; /* 100% da altura da viewport */
     width: 100%; /* 100% da largura */
     background-color: #D2D9DF; /* Cor de fundo da página (ex: cinza claro) */
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* Header: onde tem o botão de voltar */
 header {
-    padding: 40px 0 0 40px;
+    padding: 20px 0 0 20px;
+}
+/* Contêiner do campo de senha */
+.position-relative {
+    position: relative;
+}
+
+/* Input do campo de senha */
+input.form-control {
+    padding-right: 40px;
+    /* Espaço extra para o botão no lado direito */
+}
+
+/* Botão de "olho" embutido no campo */
+#togglePassword {
+    position: absolute;
+    top: 50%;
+    /* Centraliza verticalmente */
+    right: 10px;
+    /* Posiciona próximo à borda direita */
+    transform: translateY(-50%);
+    /* Ajusta para o centro exato */
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #6c757d;
+    /* Cor padrão */
+    font-size: 1.2em;
+    /* Tamanho do ícone */
+}
+
+#togglePassword:hover {
+    color: #007bff;
+    /* Cor ao passar o mouse */
 }
 
 .btn-primary {
@@ -41,7 +74,7 @@ header {
 /*  ----------------------*/
 
 .titulo-cadastro {
-    padding: 10px 0; /* Espaçamento superior e inferior */
+    padding: 1px 0; /* Espaçamento superior e inferior */
 
     font-size: 2em;
 }
@@ -62,6 +95,7 @@ header {
     background-color: white;
     padding: 20px;
     border-radius: 40px;
+    margin-top: -50px;
 }
 /* Botão "cadastrar" */
 .custom-button {

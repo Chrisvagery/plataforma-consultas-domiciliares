@@ -1,49 +1,257 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.unstyled {
+  all: unset;
+}
+
+html,
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  padding: 20px;
+  height: 100vh;
+  /* 100% da altura da viewport */
+  width: 100%;
+  /* 100% da largura */
+  background-color: #D2D9DF;
+  /* Cor de fundo da página (ex: cinza claro) */
+  overflow: auto;
 }
 
-.container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Header: onde tem o botão de voltar */
+header {
+  padding: 20px 0 0 20px;
 }
 
-h1 {
-  text-align: center;
+/* Contêiner do campo de senha */
+.position-relative {
+  position: relative;
 }
 
-form {
+/* Input do campo de senha */
+input.form-control {
+  padding-right: 40px;
+  /* Espaço extra para o botão no lado direito */
+}
+
+/* Botão de "olho" embutido no campo */
+#togglePassword {
+  position: absolute;
+  top: 20%;
+  /* Centraliza verticalmente */
+  right: 10px;
+  /* Posiciona próximo à borda direita */
+  transform: translateY(-50%);
+  /* Ajusta para o centro exato */
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #6c757d;
+  /* Cor padrão */
+  font-size: 1.2em;
+  /* Tamanho do ícone */
+}
+
+#togglePassword:hover {
+  color: #007bff;
+  /* Cor ao passar o mouse */
+}
+
+.btn-primary {
+  background-color: white;
+  /* Sem cor de fundo */
+  text-decoration-color: black;
+  border: none;
+  /* Sem borda */
+  transition: background-color 0.3s ease;
+  /* Animação suave para a cor de fundo */
+}
+
+.btn-primary:hover {
+  background-color: white;
+}
+
+/* ------------------ */
+/*        Main        */
+/* ------------------ */
+
+/*  ---------------------- */
+/*   Formulário cadastro   */
+/*  ----------------------*/
+
+.titulo-cadastro {
+  padding: 1px 0;
+  /* Espaçamento superior e inferior */
+
+  font-size: 2em;
+}
+
+.div-cadastro {
+  /* Alterado para 'div-cadastro' */
+  min-height: 80vh;
+  /* Define a altura mínima como 80% da altura da viewport */
+}
+
+.cadastro {
+  /* Alterado para 'cadastro' */
   display: flex;
   flex-direction: column;
+  background-color: white;
+  border-radius: 40px;
 }
 
-input,
-textarea {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.parte-branca {
+  display: flex;
+  background-color: white;
+  padding: 20px;
+  border-radius: 40px;
+  margin-top: -50px;
 }
 
-button {
-  padding: 10px;
-  background-color: #28a745;
+/* Botão "cadastrar" */
+.custom-button {
+  border-radius: 150px;
+  background-color: #030101;
   color: white;
+  /* Cor do texto */
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #218838;
-}
-
-#responseMessage {
-  margin-top: 20px;
+  /* Remove a borda */
+  padding: 10px 0;
+  /* Espaçamento interno vertical */
   text-align: center;
+  /* Centraliza o texto */
+  text-decoration: none;
+  /* Remove o sublinhado */
+  display: block;
+  /* Faz o botão ocupar toda a largura disponível */
+  width: 100%;
+  /* Ocupa 100% da largura do elemento pai */
+  margin-top: 20px;
+  font-size: 16px;
+  /* Tamanho da fonte */
+  transition-duration: 0.4s;
+  /* Efeito de transição */
+}
+
+/*  ---------------------- */
+/*   Primeira Coluna  */
+/*  ----------------------*/
+
+.parte-preta {
+  padding: 20px;
+  background: #242424;
+  color: white;
+  border-radius: 20px;
+  max-height: 604px;
+}
+
+/*  ---------------------- */
+/*   BOtao     */
+/*  ----------------------*/
+
+.custom-button {
+  border-radius: 150px;
+  background-color: #030101;
+  color: white;
+  /* Cor do texto */
+  border: none;
+  /* Remove a borda */
+  padding: 10px 0;
+  /* Espaçamento interno vertical */
+  text-align: center;
+  /* Centraliza o texto */
+  text-decoration: none;
+  /* Remove o sublinhado */
+  display: block;
+  /* Faz o botão ocupar toda a largura disponível */
+  width: 100%;
+  /* Ocupa 100% da largura do elemento pai */
+  margin-top: 20px;
+  font-size: 16px;
+  /* Tamanho da fonte */
+  transition-duration: 0.4s;
+  /* Efeito de transição */
+}
+
+.custom-button:hover {
+  background-color: blue;
+}
+
+/*  ---------------------- */
+/*   Endereço              */
+/*  ----------------------*/
+
+/* Estilo para o campo de entrada de CEP */
+
+
+#cep {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Definir uma altura fixa para a exibição do endereço */
+#enderecoSelecionado {
+  height: 80px;
+  /* Ajuste a altura conforme necessário */
+  overflow-y: auto;
+  /* Permite a rolagem caso o conteúdo seja maior que a altura definida */
+  border: 1px solid #ccc;
+  /* Borda para demarcar a área */
+  padding: 10px;
+  /* Espaçamento interno */
+  background-color: #f9f9f9;
+  /* Cor de fundo */
+  border-radius: 5px;
+  /* Bordas arredondadas */
+}
+
+/* Campo de Doenças Preexistentes */
+#doencas {
+  max-height: 150px;
+  /* Definir altura máxima */
+  overflow-y: auto;
+  /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+  padding: 10px;
+  /* Espaçamento interno */
+}
+
+/* Campo de Alergias */
+#alergias {
+  max-height: 80px;
+  /* Definir altura máxima */
+  overflow-y: auto;
+  /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+  padding: 10px;
+  /* Espaçamento interno */
+}
+
+/* Seleção de Tipos de Consultas */
+.consultas-container {
+  max-height: 90px;
+  /* Definir altura máxima para a lista de checkboxes */
+  overflow-y: auto;
+  /* Adiciona rolagem vertical quando o conteúdo exceder a altura */
+  padding: 10px;
+  /* Espaçamento interno */
+  border: 1px solid #ccc;
+  /* Borda para demarcar a área */
+  border-radius: 5px;
+  /* Bordas arredondadas */
+  background-color: #f9f9f9;
+  /* Cor de fundo */
+}
+/* Esconde o menu de cadastro inicialmente */
+#registerMenu {
+  display: none;
+}
+
+/* Mostra o menu ao passar o mouse */
+#registerDropdown:hover #registerMenu {
+  display: block;
 }

@@ -1,30 +1,30 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-BR">
 
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rose - Verificar Token</title>
-    <!-- Bootstrap CSS -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Fonte josh -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet">
 
-    <!-- Link com CSS -->
+    
     <link rel="stylesheet" href="/styles/verificartoken.css">
   </head>
 
   <body>
-    <!-- header: onde vai ter o botao para voltar -->
+    
     <header class="p-4">
       <button onclick="history.back()" class="btn btn-primary"><i class="bi bi-arrow-left text-black"></i></button>
     </header>
 
-    <!-- main: onde vai ter a parte de recuperação de senha -->
+    
     <main>
       <div class="black"></div>
       <div class="container d-flex justify-content-center align-items-center div-esqueceu">
@@ -33,7 +33,7 @@
             <div class="card-body esqueceu-senha d-flex justify-content-center align-items-center">
               <h3 class="text-center mb-4">verificar Token</h3>
 
-              <!-- Formulário para solicitar token -->
+              
 
               <form id="verifyTokenForm">
                 <div class="token-container">
@@ -41,14 +41,15 @@
                   <input type="text" class="token-input" maxlength="1" id="token2">
                   <input type="text" class="token-input" maxlength="1" id="token3">
                   <input type="text" class="token-input" maxlength="1" id="token4">
+                  <button type="submit" class="custom-button">Enviar Token</button>
                 </div>
 
-                <button type="submit" class="custom-button">Enviar Token</button>
+                
               </form>
             </div>
 
 
-            <!-- Formulário para inserir o token e nova senha -->
+            
 
             <div class="mt-3 text-center">
               <p>Lembrou a senha? <a href="/login">Entrar</a></p>
@@ -59,8 +60,102 @@
       </div>
     </main>
 
-    <!-- Script para lidar com envio do token e redefinição de senha -->
     <script src="/javascript/verificartoken.js"></script>
+  </body>
+
+</html> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/novasenha.css">
+    <title>Redefinir Senha</title>
+  
+  </head>
+
+  <body>
+    <h2>Redefinir Senha</h2>
+    <form id="resetPasswordForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" >
+
+      <label for="token">Token:</label>
+      <input type="text" id="token" name="token" >
+
+      <label for="newPassword">Digite sua nova senha:</label>
+      <input type="password" id="newPassword" name="newPassword" >
+
+      <button type="submit">Redefinir</button>
+    </form>
+
+  <script src="/javascript/novasenha.js"></script>
+  </body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose - Redefinir senha</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Fonte josh -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet">
+    <!-- Link com CSS -->
+    <!-- <link rel="stylesheet" href="/styles/PaginaLogin/login.css"> -->
+    <link rel="stylesheet" href="/styles/verificartoken.css">
+    
+  </head>
+
+  <body>
+    <!-- header: onde vai ter o botão para voltar -->
+    <header class="p-4">
+      <button onclick="history.back()" class="btn btn-primary">
+        <i class="bi bi-arrow-left text-black"></i>
+      </button>
+    </header>
+    <!-- main: onde vai ter a parte de redefinir a senha -->
+    <main>
+      <div class="black"></div>
+      <div class="container d-flex justify-content-center align-items-center div-login">
+        <div class="fundo">
+          <div class="parte-branca">
+            <div class="card-body login d-flex justify-content-center align-items-center">
+              <h3 class="text-center mb-4">Redefinir a senha</h3>
+              <form id="verifyTokenForm">
+                <div class="token-container">
+                  <input type="text" class="token-input" maxlength="1" id="token1">
+                  <input type="text" class="token-input" maxlength="1" id="token2">
+                  <input type="text" class="token-input" maxlength="1" id="token3">
+                  <input type="text" class="token-input" maxlength="1" id="token4">
+                 
+                </div>
+                <button type="submit" class="custom-button">Enviar Token</button>
+                
+                <div class="d-flex justify-content-end">
+                  <a href="/forgot-password">Esqueceu a senha?</a>
+                </div>
+                
+              </form>
+              <div class="mt-3 text-center">
+                <p>Não é um membro? <a href="/register">Cadastre-se</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="/javascript/verificartoken.js"></script>
+
   </body>
 
 </html>
