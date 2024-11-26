@@ -75,7 +75,6 @@ input.form-control {
 
 .titulo-cadastro {
     padding: 1px 0; /* Espaçamento superior e inferior */
-
     font-size: 2em;
 }
 
@@ -84,18 +83,15 @@ input.form-control {
 }
 
 .cadastro { /* Alterado para 'cadastro' */
-    display: flex;
-    flex-direction: column;
     background-color: white;
     border-radius: 40px;
 }
 
 .parte-branca {
-    display: flex;
     background-color: white;
     padding: 20px;
     border-radius: 40px;
-    margin-top: -50px;
+    margin-top: 10px;
 }
 /* Botão "cadastrar" */
 .custom-button {
@@ -121,8 +117,6 @@ input.form-control {
     padding: 20px;
     background: #242424;
     color: white;
-    border-radius: 20px;
-    max-height: 604px;
 }
 
 /*  ---------------------- */
